@@ -1,0 +1,28 @@
+{
+  "name": "fairsharing-api-client",
+  "version": "0.0.1",
+  "description": "The official Javascript FAIRSharing API client",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FAIRsharing/FAIRSharing-API-Client.git"
+  },
+  "keywords": [
+    "FAIRsharing",
+    "Client",
+    "API"
+  ],
+  "author": "Dominique Batista",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FAIRsharing/FAIRSharing-API-Client/issues"
+  },
+  "homepage": "https://github.com/FAIRsharing/FAIRSharing-API-Client#readme",
+  "dependencies": {
+    "axios": "^0.22.0"
+  }
+}
