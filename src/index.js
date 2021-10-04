@@ -745,6 +745,6 @@ class RESTClient {
 
 }
 
-exports.buildClient = function(url, clientID) {
+module.exports = function buildClient(url, clientID) {
     return new RESTClient(url, clientID)
 }
