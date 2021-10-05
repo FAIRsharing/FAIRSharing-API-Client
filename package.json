@@ -2,7 +2,7 @@
   "name": "fairsharing-api-client",
   "version": "0.0.1",
   "description": "The official Javascript FAIRSharing API client",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "webpack",
     "test": "npm run test"

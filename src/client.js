@@ -699,6 +699,7 @@ class RESTClient {
     /* TODO:
         - getRecords/searchRecord
         - getTags
+        - getTag
      */
     /**
      * Get the current record
@@ -713,6 +714,28 @@ class RESTClient {
         };
         let response = await this.executeQuery(request, true);
         return response.data;
+    }
+
+    /**
+     * Search the countries
+     * @param {String} tagType - the type of tag to search for (eg. countries, domains, subjects, ...)
+     * @param {String} query - an optional query string
+     * @returns {Promise}
+     */
+    async searchTags(tagType, query= null){
+        const body = query ? {q: query} : {};
+        const request = {
+            method: "post",
+            baseURL: `${this.baseURL}/search/${tagType}`,
+            headers: this.headers,
+            body: body
+        };
+        let response = await this.executeQuery(request, true);
+        return {
+            body: body,
+            url: request.baseURL,
+            data: response.data
+        };
     }
 
 

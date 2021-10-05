@@ -2,6 +2,7 @@ const path = require("path");
 
 module.exports = {
     mode: "development",
+    entry: "./index.js",
     module: {
         rules: [{
             loader: "babel-loader",
