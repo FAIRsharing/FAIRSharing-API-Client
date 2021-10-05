@@ -6,10 +6,9 @@ class RESTClient {
      * The RESTClient is a singleton class that handles the connection and data exchange from the back-end
      * REST API.
      */
-    constructor(url, clientID){
+    constructor(url){
         if (RESTClient._instance){
             this.baseURL = url;
-            this.headers['X-Client-Id'] = clientID;
             return RESTClient._instance;
         }
         RESTClient._instance = this;
@@ -19,22 +18,31 @@ class RESTClient {
             "Content-Type": "application/json",
             "Cache-Control": "no-cache"
         };
-        this.headers['X-Client-Id'] = clientID;
     }
 
-    /* USERS: all methods below related to handling user authentication */
+    /* *******************************************************************
+                        USER AND USER AUTHENTICATION METHODS
+    *******************************************************************  */
 
     /**
-     * Method to add authorisation to the headers.
+     * Method to add authorisation token to the headers.
      * @param jwt - the user's json web token
      * @return {JSON} - headers with authorisation field added
      */
     set_authentication_headers(jwt) {
-        this.headers['Authorization'] = 'Bearer ' + jwt;
+        if (jwt) this.headers['Authorization'] = `Bearer ${jwt}`;
+        else delete this.headers['Authorization']
     }
 
     /**
-     * Method to log in the user
+     * Makes sure the user is logged in to before triggering the query.
+     */
+    is_loggedIn() {
+        if (!this.headers.Authorization) throw Error("Missing JWT. Please login first");
+    }
+
+    /**
+     * Method to log in the user and set the JWT into the headers
      * @param username - name of the user
      * @param password - password of the user
      * @return {Promise} - the response of the server
@@ -54,34 +62,37 @@ class RESTClient {
             headers: this.headers
         };
         let response = await this.executeQuery(request);
+        if (!response.error){
+            this.set_authentication_headers(response.data['jwt'])
+        }
         return response.data;
     }
 
     /**
      * Logout the user from the back, expiring the current jwt.
-     * @param {String} jwt - the user token to expire.
      * @returns {Promise}
      */
-    async logout(jwt){
+    async logout(){
         const request = {
             method: "delete",
             baseURL: this.baseURL + "/users/sign_out",
-            headers: this.auth_headers(jwt)
+            headers: this.headers
         };
         let response = await this.executeQuery(request);
+        this.set_authentication_headers(null)
         return response.data;
     }
 
     /**
      *  Method to create a new user
-     * @param {Object} userLogin - the user account to create
+     * @param {Object} userAccount - the user account to create
      * @returns {Promise} response - server response
      */
-    async createAccount(userLogin){
+    async createAccount(userAccount){
         const request = {
             method: "post",
             baseURL: this.baseURL + "/users",
-            data: {user: userLogin},
+            data: {user: userAccount},
             headers: this.headers
         };
         let response = await this.executeQuery(request);
@@ -89,7 +100,7 @@ class RESTClient {
     }
 
     /**
-     * Validate the account given the corresponding token
+     * Validate the account given the corresponding token received in the email
      * @param {String} token - the account token to validate
      * @returns {Promise}
      */
@@ -139,7 +150,7 @@ class RESTClient {
 
     /**
      * Reset the password of the given user
-     * @param {Object} user - contains the new pwd, repeated pwd and token.
+     * @param {Object} user - contains the new pwd, repeated pwd and token received in the email.
      * @returns {Promise}
      */
     async resetPassword(user){
@@ -155,23 +166,22 @@ class RESTClient {
 
     /**
      * Changes the password of the logged in user
-     * @param {String} jwt - the user token
      * @param {Object} user - contains the current, new and repeated new password
      * @returns {Promise}
      */
-    async resetPasswordWithoutToken(jwt, user){
+    async resetPasswordWithoutToken(user){
         const request = {
             method: "put",
             baseURL: this.baseURL + "/users/",
-            headers: this.auth_headers(jwt),
+            headers: this.headers,
             data: {user: user}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
-     * Verify the validity of the given password
+     * Verify the given password is strong enough
      * @param {String} password - the password to test
      * @returns {Promise}
      */
@@ -189,45 +199,42 @@ class RESTClient {
 
     /**
      * Get the current user data
-     * @param jwt
      * @returns {Promise}
      */
-    async getUser(jwt){
+    async getMyself(){
         const request = {
             method: "get",
             baseURL: this.baseURL + "/users/edit",
-            headers: this.auth_headers(jwt)
+            headers: this.headers
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Get the current user data
-     * @param jwt
-     * @param id
+     * @param userID - ID of the user to get the data from
      * @returns {Promise}
      */
-    async getPublicUser(jwt,id){
+    async getPublicUser(userID){
         const request = {
             method: "get",
-            baseURL: this.baseURL + `/user_admin/${id}`,
-            headers: this.auth_headers(jwt)
+            baseURL: this.baseURL + `/user_admin/${userID}`,
+            headers: this.headers
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Get all users list
-     * @param jwt
      * @returns {Promise}
      */
-    async getUsersList(jwt){
+    async getUsersList(){
         const request = {
             method: "get",
             baseURL: this.baseURL + "/user_admin/",
-            headers: this.auth_headers(jwt)
+            headers: this.headers
         };
         let response = await this.executeQuery(request);
         return response.data;
@@ -236,359 +243,327 @@ class RESTClient {
     /**
      * Edit the current logged in user profile
      * @param {Object} newUser - the new values for the logged in user
-     * @param {String} jwt - JWT of the logged in user
      * @returns {Promise}
      */
-    async editUser(newUser, jwt){
+    async editMyself(newUser){
         const request = {
             method: "put",
             baseURL: this.baseURL + "/users",
-            headers: this.auth_headers(jwt),
+            headers: this.headers,
             data: {user: newUser}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
-     * Edit the current logged in user profile
-     * @param {Object} newUser - the new values for the logged in user
-     * @param {String} jwt - JWT of the logged in user
+     * Edit the given user profile. Requires Admin rights.
+     * @param {Object} newUser - the new values for the user to edit.
      * @returns {Promise}
      */
-    async editPublicUser(newUser, jwt){
+    async editUser(newUser){
         const request = {
             method: "put",
             baseURL: this.baseURL + `/user_admin/${newUser.id}` ,
-            headers: this.auth_headers(jwt),
+            headers: this.headers,
             data: {user: newUser}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Delete the user
-     * @param userID
-     * @param {String} jwt - JWT of the logged in user
+     * @param userID - the ID of the user to delete. Requires Admin rights.
      * @returns {Promise}
      */
-    async deletePublicUser(userID, jwt){
+    async deleteUser(userID){
         const request = {
             method: "delete",
             baseURL: this.baseURL + `/user_admin/${userID}` ,
-            headers: this.auth_headers(jwt),
+            headers: this.headers,
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Verify that the given JWT is still valid
-     * @param {String} jwt - the token to validate
      * @returns {Promise}
      */
-    async validateToken(jwt){
+    async validateToken(){
         const request = {
             method: "get",
             baseURL: this.baseURL + "/users/valid",
-            headers: this.auth_headers(jwt)
+            headers: this.headers
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
+        if (!response.data.success) this.set_authentication_headers(null)
         return response.data;
     }
 
-    /* EDITORS METHODS */
+
+    /* *******************************************************************
+                                EDITOR METHODS
+    *******************************************************************  */
 
     /**
      * Post the given object to the API to create the corresponding record.
-     * @param record
-     * @param {String} jwt - JWT of the logged in user
+     * @param {Object} record
      * @returns {Promise}
      */
-    async createRecord(record, jwt){
+    async createRecord(record){
         const request = {
             method: "post",
             baseURL: this.baseURL + "/fairsharing_records",
-            headers: this.auth_headers(jwt),
+            headers: this.headers,
             data: {fairsharing_record: record}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Update the given record
-     * @param {Object} record - the record to update containing the ID to target, the new values
-     * and the user token
+     * @param {Number} recordID - the record ID to update
+     * @param {Object} record - the record new values
      * @returns {Promise}
      */
-    async updateRecord(record){
+    async updateRecord(recordID, record){
         const request = {
             method: "put",
-            baseURL: this.baseURL + "/fairsharing_records/" + record.id,
-            headers: this.auth_headers(record.token),
-            data: {fairsharing_record: record.record}
+            baseURL: this.baseURL + "/fairsharing_records/" + recordID,
+            headers: this.headers,
+            data: {fairsharing_record: record}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Determine if a user has permission to edit this record.
-     * @param {Number} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} userToken - JWT of the logged in user
+     * @param {Number} recordID - ID of the record.
      * @returns {Promise}
      */
-    async canEdit(recordID, userToken){
+    async canEdit(recordID){
         const request = {
             method: "get",
             baseURL: this.baseURL + "/fairsharing_records/can_edit/" + recordID,
-            headers: this.auth_headers(userToken),
+            headers: this.headers,
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
-     * Attempt to create a MaintenanceRequest for a user for a FairsharingRecord.
-     * @param {Number} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} userToken - JWT of the logged in user
+     * Attempt to create a request to become a maintainer/owner of the record. Requires admin validation.
+     * @param {Number} recordID - ID for the relevant record.
      * @returns {Promise}
      */
-    async claimRecord(recordID, userToken) {
+    async claimRecord(recordID) {
         const request = {
             method: "post",
             baseURL: this.baseURL + "/maintenance_requests",
-            headers: this.auth_headers(userToken),
+            headers: this.headers,
             data: {maintenance_request: {fairsharing_record_id: recordID}}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
-     * Determine if a user has permission to create a MaintenanceRequest for a FairsharingRecord.
+     * Determine if a the logged in user has permission to claim a record.
      * @param {Number} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} userToken - JWT of the logged in user
      * @returns {Promise}
      */
-    async canClaim(recordID, userToken) {
+    async canClaim(recordID) {
         const request = {
             method: "get",
             baseURL: this.baseURL + "/maintenance_requests/existing/" + recordID,
-            headers: this.auth_headers(userToken),
+            headers: this.headers,
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Attempt to create a RecordReview for a user for a FairsharingRecord.
      * @param {Number} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} userToken - JWT of the logged in user
      * @returns {Promise}
      */
-    async reviewRecord(recordID, userToken) {
+    async reviewRecord(recordID) {
         const request = {
             method: "post",
             baseURL: this.baseURL + "/record_reviews",
-            headers: this.auth_headers(userToken),
+            headers: this.headers,
             data: {record_review: {fairsharing_record_id: recordID}}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
-
-    /* USER DEFINED TAGS */
 
     /**
      * Create a new user defined tag in the database for users to tag their records.
      * @param {String} term - the string value of the term
-     * @param {String} token - the user JWT
      * @returns {Promise}
      */
-    async createNewUserDefinedTag(term, token){
+    async createNewUserDefinedTag(term){
         const request = {
             method: "post",
             baseURL: this.baseURL + "/user_defined_tags",
-            headers: this.auth_headers(token),
+            headers: this.headers,
             data: {user_defined_tag: {label:term}}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
-
-    /* LICENCES */
-
     /**
-     * Create new a licence link
-     * @param {Object} licenceLink - the licence link to create
-     * @param {String} token - the user token
+     * TODO: TEST AND WRITE THE INPUT EXAMPLE
+     * Create new a licence link between a licence and a record
+     * @param {Object} licenceLink - the licence link to create: contains the licence id and the record id.
      * @returns {Promise}
      */
-    async createLicenceLink(licenceLink, token){
+    async createLicenceLink(licenceLink){
         let _client = this;
         const request = {
             method: "post",
             baseURL: _client.baseURL + "/licence_links",
-            headers: this.auth_headers(token),
+            headers: this.headers,
             data: {licence_link: licenceLink}
         };
-        let response = await _client.executeQuery(request);
+        let response = await _client.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Delete the given licence
-     * @param {Number} id - id of the licence link to delete
-     * @param {String} token - the user token
+     * @param {Number} licenceLinkID - id of the licence link to delete
      * @returns {Promise}
      */
-    async deleteLicenceLink(id, token){
+    async deleteLicenceLink(licenceLinkID){
         let _client = this;
         const request = {
             method: "delete",
-            baseURL: _client.baseURL + "/licence_links/" + id,
-            headers: this.auth_headers(token),
+            baseURL: _client.baseURL + "/licence_links/" + licenceLinkID,
+            headers: this.headers,
         };
-        let response = await _client.executeQuery(request);
+        let response = await _client.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Update the licenceLink
      * @param {Object} licenceLink - the new values for the licence link
-     * @param {String} token the user token
      * @returns {Promise}
      */
-    async updateLicenceLink(licenceLink, token){
+    async updateLicenceLink(licenceLink){
         let _client = this;
         const request = {
             method: "put",
             baseURL: _client.baseURL + "/licence_links/" + licenceLink.id,
-            headers: this.auth_headers(token),
+            headers: this.headers,
             data: {licence_link: licenceLink}
         };
-        let response = await _client.executeQuery(request);
+        let response = await _client.executeQuery(request, true);
         return response.data;
     }
 
-
-    /* PUBLICATIONS */
-
-    async createPublication(publication, token){
-        let _client = this;
+    /**
+     * Creates a new publications
+     * @param {Object} publication - the publication to create
+     * @returns {Promise}
+     */
+    async createPublication(publication){
         const request = {
             method: "post",
-            baseURL: _client.baseURL + "/publications",
-            headers: this.auth_headers(token),
+            baseURL: this.baseURL + "/publications",
+            headers: this.headers,
             data: { publication: publication }
         };
-        let response = await _client.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
-    async editPublication(publication, token){
-        let _client = this;
+    /**
+     * Edit the given publication
+     * @param {Object} publication - the publication ID and new values
+     * @returns {Promise}
+     */
+    async editPublication(publication){
         const request = {
             method: "put",
-            baseURL: _client.baseURL + "/publications/" + publication.id,
-            headers: this.auth_headers(token),
+            baseURL: this.baseURL + "/publications/" + publication.id,
+            headers: this.headers,
             data: { publication: publication }
         };
-        let response = await _client.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
-    /* RELATIONSHIPS BETWEEN RECORDS */
     /**
      * Saves the relationships as an array of items containing a targetID, a sourceID and a labelID
-     * @param {Object} options - the options to pass as {token: String, relations: Array}
+     * @param {Number} recordID - the record to add the relationships to.
+     * @param {Array<Object>} relations - the relations.
      * @returns {Promise}
      */
-    async saveRelations(options){
+    async saveRelations(recordID, relations){
         const request = {
             method: 'put',
-            baseURL: this.baseURL + '/fairsharing_records/' + options.target,
-            headers: this.auth_headers(options.token),
-            data: {fairsharing_record: {record_associations_attributes: options.relations}}
-
+            baseURL: this.baseURL + '/fairsharing_records/' + recordID,
+            headers: this.headers,
+            data: {fairsharing_record: {record_associations_attributes: relations}}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
-    /**
-     * Deletes the relationships as an array of items containing a targetID, a sourceID and a labelID
-     * @param {Object} options - the options to pass as {token: String, relations: Array}
-     * @returns {Promise}
-     */
-    async deleteRelations(options){
-        const request = {
-            method: 'put',
-            baseURL: this.baseURL + '/fairsharing_records/' + options.target,
-            headers: this.auth_headers(options.token),
-            data: {fairsharing_record: {record_associations_attributes: options.relations}}
-
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    /* ORGANISATIONS AND GRANTS */
     /**
      * Create a given organisation
      * @param {Object} organisation
-     * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async createOrganisation(organisation, userToken){
-        let _client = this;
+    async createOrganisation(organisation){
         const request = {
             method: "post",
-            baseURL: _client.baseURL + "/organisations",
-            headers: this.auth_headers(userToken),
+            baseURL: this.baseURL + "/organisations",
+            headers: this.headers,
             data: { organisation: organisation }
         };
-        let response = await _client.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Create a given grant
      * @param {Object} grant
-     * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async createGrant(grant, userToken){
-        let _client = this;
+    async createGrant(grant){
         const request = {
             method: "post",
-            baseURL: _client.baseURL + "/grants",
-            headers: this.auth_headers(userToken),
+            baseURL: this.baseURL + "/grants",
+            headers: this.headers,
             data: { grant: grant }
         };
-        let response = await _client.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Create a new link between an organisation, a record and an optional grant.
      * @param {Object} organisationLink - the organisation link to create
-     * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async createOrganisationLink(organisationLink, userToken){
+    async createOrganisationLink(organisationLink){
         let _client = this;
         const request = {
             method: "post",
             baseURL: _client.baseURL + "/organisation_links",
-            headers: this.auth_headers(userToken),
+            headers: this.headers,
             data: { organisation_link: organisationLink }
         };
-        let response = await _client.executeQuery(request);
+        let response = await _client.executeQuery(request, true);
         return response.data;
     }
 
@@ -596,89 +571,48 @@ class RESTClient {
      * Update the organisationLink given from linkID input with the given organisationLink
      * @param {Object} organisationLink - the new organisation link value
      * @param {Number} linkID - ID of the organisationLink to update
-     * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async updateOrganisationLink(organisationLink, linkID, userToken){
-        let _client = this;
+    async updateOrganisationLink(organisationLink, linkID){
         const request = {
             method: "put",
-            baseURL: _client.baseURL + "/organisation_links/" + linkID,
-            headers: this.auth_headers(userToken),
+            baseURL: this.baseURL + "/organisation_links/" + linkID,
+            headers: this.headers,
             data: { organisation_link: organisationLink }
         };
-        let response = await _client.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Delete the given organisation link
      * @param {Number} linkID - the id of the link to remove
-     * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async deleteOrganisationLink(linkID, userToken){
+    async deleteOrganisationLink(linkID){
         let _client = this;
         const request = {
             method: "delete",
             baseURL: _client.baseURL + "/organisation_links/" + linkID,
-            headers: this.auth_headers(userToken),
+            headers: this.headers,
         };
-        let response = await _client.executeQuery(request);
+        let response = await _client.executeQuery(request, true);
         return response.data;
     }
 
     /**
      * Get the extra metadata fields for a RecordType
      * @param {String} type - name of the record type.
-     * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async extraMetadataFields(type, userToken) {
+    async extraMetadataFields(type) {
         const request = {
             method: "post",
             baseURL: this.baseURL + "/fairsharing_records/metadata_fields",
-            headers: this.auth_headers(userToken),
+            headers: this.headers,
             data: {type: type}
         };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    /* METHODS FOR CURATION */
-    /**
-     * Update the maintenanceRequest given the new status value
-     * @param {Number} maintenanceRequest  ID of the maintenanceRequest to update
-     * @param {string} newStatus - new status to update
-     * @param {String} userToken - the user jwt
-     * @returns {Promise}
-     */
-    async updateStatusMaintenanceRequest(maintenanceRequest, newStatus, userToken){
-        let _client = this;
-        const request = {
-            method: "put",
-            baseURL: _client.baseURL + "/maintenance_requests/" + maintenanceRequest,
-            headers: this.auth_headers(userToken),
-            data: { maintenance_request: {status: newStatus}}
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
-    }
-
-    /**
-     * Delete Record
-     * @param {Number} id - id of the record link to delete
-     * @param {String} token - the user token
-     * @returns {Promise}
-     */
-    async deleteRecord(id, token){
-        let _client = this;
-        const request = {
-            method: "delete",
-            baseURL: _client.baseURL + "/fairsharing_records/" + id,
-            headers: this.auth_headers(token),
-        };
-        let response = await _client.executeQuery(request);
+        let response = await this.executeQuery(request, true);
         return response.data;
     }
 
@@ -686,7 +620,6 @@ class RESTClient {
      * Get the list of allowed relation types for editing record's relationships.
      * @returns {Promise}
      */
-    /* EDITOR DATA */
     async getRelationsTypes(){
         let _client = this;
         const request = {
@@ -711,14 +644,70 @@ class RESTClient {
         return response.data;
     }
 
-    /* EXTRA METHODS */
+
+    /* *******************************************************************
+                                CURATION METHODS
+    *******************************************************************  */
+
+    /**
+     * Update the maintenanceRequest given the new status value. Requires admin right.
+     * @param {Number} maintenanceRequest  ID of the maintenanceRequest to update
+     * @param {string} newStatus - new status to update
+     * @returns {Promise}
+     */
+    async updateStatusMaintenanceRequest(maintenanceRequest, newStatus){
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + "/maintenance_requests/" + maintenanceRequest,
+            headers: this.headers,
+            data: { maintenance_request: {status: newStatus}}
+        };
+        let response = await this.executeQuery(request, true);
+        return response.data;
+    }
+
+    /**
+     * Delete Record. Requires Admin right.
+     * @param {Number} id - id of the record link to delete
+     * @returns {Promise}
+     */
+    async deleteRecord(id){
+        let _client = this;
+        const request = {
+            method: "delete",
+            baseURL: _client.baseURL + "/fairsharing_records/" + id,
+            headers: this.headers,
+        };
+        let response = await _client.executeQuery(request, true);
+        return response.data;
+    }
+
+    /**
+     * Get records without DOIS
+     * @returns {Promise}
+     */
+    async getRecordsWoDOIs(){
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/files/no_dois",
+        };
+        let response = await this.executeQuery(request, true);
+        return response.data;
+    }
+
+
+    /* *******************************************************************
+                                OTHER METHODS
+    *******************************************************************  */
 
     /**
      * Trigger the given query with Axios
-     * @param query
-     * @returns {Promise<*>}
+     * @param {Object} query - the query to execute
+     * @param {Boolean} mustBeLoggedIn - should the user be logged in before attempting to execute the query
+     * @returns {Promise}
      */
-    async executeQuery(query) {
+    async executeQuery(query, mustBeLoggedIn = false) {
+        if (mustBeLoggedIn) this.is_loggedIn()
         try {
             return await axios(query);
         }
@@ -726,25 +715,8 @@ class RESTClient {
             return({data: {error: e}});
         }
     }
-
-    /**
-     * Get records without DOIS
-     * @param {String} userToken - the user token that needs to be a curator
-     * @returns {Promise}
-     */
-    async getRecordsWoDOIs(userToken){
-        let _client = this;
-        const request = {
-            method: "get",
-            baseURL: _client.baseURL + "/files/no_dois",
-        };
-        this.set_authentication_headers(userToken);
-        let response = await _client.executeQuery(request);
-        return response.data;
-    }
-
 }
 
-module.exports = function buildClient(url, clientID) {
+module.exports = (url, clientID) => {
     return new RESTClient(url, clientID)
 }
