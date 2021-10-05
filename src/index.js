@@ -695,6 +695,26 @@ class RESTClient {
         return response.data;
     }
 
+    /* GETTERS */
+    /* TODO:
+        - getRecords/searchRecord
+        - getTags
+     */
+    /**
+     * Get the current record
+     * @param {Number} recordID - id of the record to get
+     * @returns {Promise}
+     */
+    async getRecord(recordID){
+        const request = {
+            method: "get",
+            baseURL: `${this.baseURL}/fairsharing_records/${recordID}`,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request, true);
+        return response.data;
+    }
+
 
     /* *******************************************************************
                                 OTHER METHODS
