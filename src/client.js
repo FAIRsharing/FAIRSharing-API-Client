@@ -1,5 +1,3 @@
-const axios = require("axios")
-
 class RESTClient {
 
     /**
@@ -58,7 +56,7 @@ class RESTClient {
         const request = {
             method: "post",
             baseURL: this.baseURL + endpoint,
-            data: body,
+            body: body,
             headers: this.headers
         };
         let response = await this.executeQuery(request);
@@ -92,7 +90,7 @@ class RESTClient {
         const request = {
             method: "post",
             baseURL: this.baseURL + "/users",
-            data: {user: userAccount},
+            body: {user: userAccount},
             headers: this.headers
         };
         let response = await this.executeQuery(request);
@@ -124,7 +122,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/users/password",
             headers: this.headers,
-            data: {
+            body: {
                 user: {email: email}
             }
         };
@@ -142,7 +140,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/users/confirmation",
             headers: this.headers,
-            data: {user: user}
+            body: {user: user}
         };
         let response = await this.executeQuery(request);
         return response.data;
@@ -158,7 +156,7 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/users/password",
             headers: this.headers,
-            data: {user: user}
+            body: {user: user}
         };
         let response = await this.executeQuery(request);
         return response.data;
@@ -174,7 +172,7 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/users/",
             headers: this.headers,
-            data: {user: user}
+            body: {user: user}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -191,7 +189,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/users/check_password",
             headers: headers,
-            data: {password: password}
+            body: {password: password}
         };
         let response = await this.executeQuery(request);
         return response.data;
@@ -250,7 +248,7 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/users",
             headers: this.headers,
-            data: {user: newUser}
+            body: {user: newUser}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -266,7 +264,7 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + `/user_admin/${newUser.id}` ,
             headers: this.headers,
-            data: {user: newUser}
+            body: {user: newUser}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -317,7 +315,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/fairsharing_records",
             headers: this.headers,
-            data: {fairsharing_record: record}
+            body: {fairsharing_record: record}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -334,7 +332,7 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/fairsharing_records/" + recordID,
             headers: this.headers,
-            data: {fairsharing_record: record}
+            body: {fairsharing_record: record}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -365,7 +363,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/maintenance_requests",
             headers: this.headers,
-            data: {maintenance_request: {fairsharing_record_id: recordID}}
+            body: {maintenance_request: {fairsharing_record_id: recordID}}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -396,7 +394,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/record_reviews",
             headers: this.headers,
-            data: {record_review: {fairsharing_record_id: recordID}}
+            body: {record_review: {fairsharing_record_id: recordID}}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -412,7 +410,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/user_defined_tags",
             headers: this.headers,
-            data: {user_defined_tag: {label:term}}
+            body: {user_defined_tag: {label:term}}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -430,7 +428,7 @@ class RESTClient {
             method: "post",
             baseURL: _client.baseURL + "/licence_links",
             headers: this.headers,
-            data: {licence_link: licenceLink}
+            body: {licence_link: licenceLink}
         };
         let response = await _client.executeQuery(request, true);
         return response.data;
@@ -463,7 +461,7 @@ class RESTClient {
             method: "put",
             baseURL: _client.baseURL + "/licence_links/" + licenceLink.id,
             headers: this.headers,
-            data: {licence_link: licenceLink}
+            body: {licence_link: licenceLink}
         };
         let response = await _client.executeQuery(request, true);
         return response.data;
@@ -479,7 +477,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/publications",
             headers: this.headers,
-            data: { publication: publication }
+            body: { publication: publication }
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -495,7 +493,7 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/publications/" + publication.id,
             headers: this.headers,
-            data: { publication: publication }
+            body: { publication: publication }
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -512,7 +510,7 @@ class RESTClient {
             method: 'put',
             baseURL: this.baseURL + '/fairsharing_records/' + recordID,
             headers: this.headers,
-            data: {fairsharing_record: {record_associations_attributes: relations}}
+            body: {fairsharing_record: {record_associations_attributes: relations}}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -528,7 +526,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/organisations",
             headers: this.headers,
-            data: { organisation: organisation }
+            body: { organisation: organisation }
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -544,7 +542,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/grants",
             headers: this.headers,
-            data: { grant: grant }
+            body: { grant: grant }
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -561,7 +559,7 @@ class RESTClient {
             method: "post",
             baseURL: _client.baseURL + "/organisation_links",
             headers: this.headers,
-            data: { organisation_link: organisationLink }
+            body: { organisation_link: organisationLink }
         };
         let response = await _client.executeQuery(request, true);
         return response.data;
@@ -578,7 +576,7 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/organisation_links/" + linkID,
             headers: this.headers,
-            data: { organisation_link: organisationLink }
+            body: { organisation_link: organisationLink }
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -610,7 +608,7 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/fairsharing_records/metadata_fields",
             headers: this.headers,
-            data: {type: type}
+            body: {type: type}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -660,7 +658,7 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/maintenance_requests/" + maintenanceRequest,
             headers: this.headers,
-            data: { maintenance_request: {status: newStatus}}
+            body: { maintenance_request: {status: newStatus}}
         };
         let response = await this.executeQuery(request, true);
         return response.data;
@@ -695,12 +693,6 @@ class RESTClient {
         return response.data;
     }
 
-    /* GETTERS */
-    /* TODO:
-        - getRecords/searchRecord
-        - getTags
-        - getTag
-     */
     /**
      * Get the current record
      * @param {Number} recordID - id of the record to get
@@ -717,12 +709,30 @@ class RESTClient {
     }
 
     /**
+     * Validates the tag type against allowed types
+     * @param {String} tagType
+     */
+    validate_tag_type(tagType) {
+        const allowed = [
+            "countries",
+            "domains",
+            "subjects",
+            "user_defined_tags",
+            "taxonomies",
+            "publications",
+            "record_types"
+        ]
+        if (!allowed.includes(tagType)) throw Error(`tag type should be one of ${allowed.join(", ")}`)
+    }
+
+    /**
      * Search the countries
      * @param {String} tagType - the type of tag to search for (eg. countries, domains, subjects, ...)
      * @param {String} query - an optional query string
      * @returns {Promise}
      */
-    async searchTags(tagType, query= null){
+    async searchTags(tagType, query= null) {
+        this.validate_tag_type(tagType);
         const body = query ? {q: query} : {};
         const request = {
             method: "post",
@@ -731,13 +741,142 @@ class RESTClient {
             body: body
         };
         let response = await this.executeQuery(request, true);
-        return {
-            body: body,
-            url: request.baseURL,
-            data: response.data
-        };
+        return response.data
     }
 
+    /**
+     * Helper to get countries
+     * @param {String} query - optional query string
+     * @returns {Promise}
+     */
+    async getCountries(query = null) { return await this.searchTags("countries", query) }
+
+    /**
+     * Helper to get domains
+     * @param {String} query - optional query string
+     * @returns {Promise<*>}
+     */
+    async getDomains(query = null) { return await this.searchTags("domains", query) }
+
+    /**
+     * Helper to get subjects
+     * @param {String} query - optional query string
+     * @returns {Promise<*>}
+     */
+    async getSubjects(query = null) { return await this.searchTags("subjects", query) }
+
+    /**
+     * Helper to get user defined tags
+     * @param {String} query - optional query string
+     * @returns {Promise<*>}
+     */
+    async getUserDefinedTags(query = null) { return await this.searchTags("user_defined_tags", query) }
+
+    /**
+     * Helper to get taxonomies terms
+     * @param {String} query - optional query string
+     * @returns {Promise<*>}
+     */
+    async getTaxonomies(query = null) { return await this.searchTags("taxonomies", query) }
+
+    /**
+     * Helper to get publications
+     * @param {String} query - optional query string
+     * @returns {Promise<*>}
+     */
+    async getPublications(query) { return await this.searchTags("publications", query) }
+
+    /**
+     * Helper to get recordTypes
+     * @returns {Promise<*>}
+     */
+    async getRecordTypes() { return await this.searchTags("record_types") }
+
+    /**
+     * Get the given tag type
+     * @param tagType
+     * @param tagID
+     * @returns {Promise<*>}
+     */
+    async getTag(tagType, tagID) {
+        this.validate_tag_type(tagType)
+        const request = {
+            method: "get",
+            baseURL: `${this.baseURL}/${tagType}/${tagID}`,
+            headers: this.headers,
+        };
+        let response = await this.executeQuery(request, true);
+        return response.data
+    }
+
+    /**
+     * Helper to get a country
+     * @param {Number} countryID - ID of the country to get
+     * @returns {Promise<*>}
+     */
+    async getCountry(countryID) { return await this.getTag("countries", countryID)}
+
+    /**
+     * Helper to get a domain
+     * @param {Number} domainID - ID of the domain to get
+     * @returns {Promise<*>}
+     */
+    async getDomain(domainID) { return await this.getTag("domains", domainID) }
+
+    /**
+     * Helper to get a subject
+     * @param {Number} subjectID - ID of the subject to get
+     * @returns {Promise<*>}
+     */
+    async getSubject(subjectID) { return await this.getTag("subjects", subjectID) }
+
+    /**
+     * Helper to get a user defined tag
+     * @param {Number} tagID - ID of the user defined tag to get
+     * @returns {Promise<*>}
+     */
+    async getUserDefinedTag(tagID) { return await this.getTag("user_defined_tags", tagID) }
+
+    /**
+     * Helper to get a user taxonomy term
+     * @param {Number} speciesID - ID of the taxonomy term to get
+     * @returns {Promise<*>}
+     */
+    async getSpecies(speciesID) { return await this.getTag("user_defined_tags", speciesID) }
+
+    /**
+     * Helper to get a user taxonomy term
+     * @param {Number} taxonID - ID of the taxonomy term to get
+     * @returns {Promise<*>}
+     */
+    async getTaxon(taxonID) { return await this.getTag("taxonomies", taxonID) }
+
+    /**
+     * Helper to get a publication
+     * @param {Number} pubID - ID of the pbulication to get
+     * @returns {Promise<*>}
+     */
+    async getPublication(pubID) {return await this.getTag("user_defined_tags", pubID) }
+
+    /**
+     * Search FAIRsharing records
+     * @param {Object} query - optional query string
+     * @returns {Promise<*>}
+     */
+    async searchRecords(query = {}) {
+        const body = query.q ? {q: query.q} : {};
+        const baseURL = new URL("/search/fairsharing_records", this.baseURL)
+        if (query.page) baseURL.searchParams.set("page[number]", query.page)
+        if (query.perPage) baseURL.searchParams.set("page[size]", query.perPage)
+        const request = {
+            method: "post",
+            baseURL: baseURL.href,
+            headers: this.headers,
+            body: body
+        };
+        let response = await this.executeQuery(request, true);
+        return response.data
+    }
 
     /* *******************************************************************
                                 OTHER METHODS
@@ -751,11 +890,20 @@ class RESTClient {
      */
     async executeQuery(query, mustBeLoggedIn = false) {
         if (mustBeLoggedIn) this.is_loggedIn()
+        if (query.body) query.body = JSON.stringify(query.body)
         try {
-            return await axios(query);
+            const rawResponse =  await fetch(query.baseURL, query);
+            const response = await rawResponse.json()
+
+            let cache = localStorage.getItem("requestsCache")
+            cache = cache ? JSON.parse(cache) : {}
+            cache[query.baseURL] = response
+            localStorage.setItem("requestsCache", JSON.stringify(cache))
+
+            return (response.data) ? response : {data: response}
         }
         catch(e){
-            return({data: {error: e}});
+            return({body: {data: e}});
         }
     }
 }

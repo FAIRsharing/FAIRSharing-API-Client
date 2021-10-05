@@ -22,9 +22,7 @@
     "url": "https://github.com/FAIRsharing/FAIRSharing-API-Client/issues"
   },
   "homepage": "https://github.com/FAIRsharing/FAIRSharing-API-Client#readme",
-  "dependencies": {
-    "axios": "^0.22.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "webpack": "^5.56.1",
     "webpack-dev-server": "^4.3.0",
