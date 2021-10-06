@@ -1,3 +1,5 @@
+[![Documentation](https://api.netlify.com/api/v1/badges/edd1e884-83d9-46f4-902c-b4078c3acc22/deploy-status)](https://app.netlify.com/sites/fairsharingapidoc/deploys)
+
 # FAIRSharing-API-Client
 
 The JavaScript client for the FAIRSharing API. Works with node, webpack and native JS.
