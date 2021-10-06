@@ -4,7 +4,7 @@
 
 # FAIRSharing-API-Client
 
-The JavaScript client for the FAIRSharing API. Works with node, webpack and native JS.
+The JavaScript client for the FAIRSharing API. Works with node, webpack and native JS..
 
 ## Usage
 
