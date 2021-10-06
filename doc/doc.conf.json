@@ -1,0 +1,38 @@
+{
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "source": {
+        "include": ["src/"],
+        "includePattern": "\\.(js)$",
+        "excludePattern": "\\.(spec.js)$"
+    },
+    "recurseDepth": 10,
+    "opts": {
+        "encoding": "utf8",
+        "destination": "./doc/html/",
+        "recurse": true,
+        "template": "./node_modules/tui-jsdoc-template"
+    },
+    "templates": {
+        "name": "FAIRSharing client API Documentation",
+        "logo": {
+            "url": "https://fairsharing.org/static/img/home/svg/FAIRsharing-sdp.svg",
+            "width": "200px",
+            "height": "auto",
+            "link": "https://github.com/FAIRsharing/FAIRSharing-API-Client"
+        },
+        "default": {
+            "staticFiles": {
+                "include": ["doc/"]
+            }
+        },
+        "css": [
+            "custom.css"
+        ],
+        "footerText": " FAIRsharing 2009-Present | Licenced under Creative Commons by Share Alike 4.0 International"
+    },
+    "tags": {
+        "allowUnknownTags": true
+    }
+}

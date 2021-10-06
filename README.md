@@ -1,5 +1,7 @@
 # FAIRSharing-API-Client
 
+The JavaScript client for the FAIRSharing API. Works with node, webpack and native JS.
+
 ## Usage
 
 1 - Install from npm
@@ -25,6 +27,7 @@ client.login("user", "password").then(async () => {
     await client.logout();
 })
 ```
+You can then transpile this code with webpack to make it available in the browser or execute it with node.
 
 3 - In the browser:
 ```html
