@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 class RESTClient {
 
     /**
@@ -10,7 +12,10 @@ class RESTClient {
             return RESTClient._instance;
         }
         RESTClient._instance = this;
+        this.clearCache()
         this.baseURL = url;
+        this.cacheEnabled = false;
+        this.cacheExpiry = 24;
         this.headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -56,11 +61,12 @@ class RESTClient {
         const request = {
             method: "post",
             baseURL: this.baseURL + endpoint,
-            body: body,
+            data:body,
             headers: this.headers
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         if (!response.error){
+            console.log(response)
             this.set_authentication_headers(response.data['jwt'])
         }
         return response.data;
@@ -76,7 +82,7 @@ class RESTClient {
             baseURL: this.baseURL + "/users/sign_out",
             headers: this.headers
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         this.set_authentication_headers(null)
         return response.data;
     }
@@ -90,10 +96,10 @@ class RESTClient {
         const request = {
             method: "post",
             baseURL: this.baseURL + "/users",
-            body: {user: userAccount},
+            data:{user: userAccount},
             headers: this.headers
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         return response.data;
     }
 
@@ -108,7 +114,7 @@ class RESTClient {
             baseURL: this.baseURL + "/users/confirmation?confirmation_token=" + token,
             headers: this.headers,
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         return response.data;
     }
 
@@ -122,11 +128,11 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/users/password",
             headers: this.headers,
-            body: {
+            data:{
                 user: {email: email}
             }
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         return response.data;
     }
 
@@ -140,9 +146,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/users/confirmation",
             headers: this.headers,
-            body: {user: user}
+            data:{user: user}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         return response.data;
     }
 
@@ -156,9 +162,9 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/users/password",
             headers: this.headers,
-            body: {user: user}
+            data:{user: user}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         return response.data;
     }
 
@@ -172,9 +178,9 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/users/",
             headers: this.headers,
-            body: {user: user}
+            data:{user: user}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -189,9 +195,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/users/check_password",
             headers: headers,
-            body: {password: password}
+            data:{password: password}
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         return response.data;
     }
 
@@ -205,7 +211,7 @@ class RESTClient {
             baseURL: this.baseURL + "/users/edit",
             headers: this.headers
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -220,7 +226,7 @@ class RESTClient {
             baseURL: this.baseURL + `/user_admin/${userID}`,
             headers: this.headers
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -234,7 +240,7 @@ class RESTClient {
             baseURL: this.baseURL + "/user_admin/",
             headers: this.headers
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         return response.data;
     }
 
@@ -248,9 +254,9 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/users",
             headers: this.headers,
-            body: {user: newUser}
+            data:{user: newUser}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -264,9 +270,9 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + `/user_admin/${newUser.id}` ,
             headers: this.headers,
-            body: {user: newUser}
+            data:{user: newUser}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -281,7 +287,7 @@ class RESTClient {
             baseURL: this.baseURL + `/user_admin/${userID}` ,
             headers: this.headers,
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -295,7 +301,7 @@ class RESTClient {
             baseURL: this.baseURL + "/users/valid",
             headers: this.headers
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         if (!response.data.success) this.set_authentication_headers(null)
         return response.data;
     }
@@ -315,9 +321,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/fairsharing_records",
             headers: this.headers,
-            body: {fairsharing_record: record}
+            data:{fairsharing_record: record}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -332,9 +338,9 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/fairsharing_records/" + recordID,
             headers: this.headers,
-            body: {fairsharing_record: record}
+            data:{fairsharing_record: record}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -349,7 +355,7 @@ class RESTClient {
             baseURL: this.baseURL + "/fairsharing_records/can_edit/" + recordID,
             headers: this.headers,
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -363,9 +369,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/maintenance_requests",
             headers: this.headers,
-            body: {maintenance_request: {fairsharing_record_id: recordID}}
+            data:{maintenance_request: {fairsharing_record_id: recordID}}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -380,7 +386,7 @@ class RESTClient {
             baseURL: this.baseURL + "/maintenance_requests/existing/" + recordID,
             headers: this.headers,
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -394,9 +400,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/record_reviews",
             headers: this.headers,
-            body: {record_review: {fairsharing_record_id: recordID}}
+            data:{record_review: {fairsharing_record_id: recordID}}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -410,9 +416,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/user_defined_tags",
             headers: this.headers,
-            body: {user_defined_tag: {label:term}}
+            data:{user_defined_tag: {label:term}}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -428,9 +434,9 @@ class RESTClient {
             method: "post",
             baseURL: _client.baseURL + "/licence_links",
             headers: this.headers,
-            body: {licence_link: licenceLink}
+            data:{licence_link: licenceLink}
         };
-        let response = await _client.executeQuery(request, true);
+        let response = await _client.processQuery(request, true);
         return response.data;
     }
 
@@ -446,7 +452,7 @@ class RESTClient {
             baseURL: _client.baseURL + "/licence_links/" + licenceLinkID,
             headers: this.headers,
         };
-        let response = await _client.executeQuery(request, true);
+        let response = await _client.processQuery(request, true);
         return response.data;
     }
 
@@ -461,9 +467,9 @@ class RESTClient {
             method: "put",
             baseURL: _client.baseURL + "/licence_links/" + licenceLink.id,
             headers: this.headers,
-            body: {licence_link: licenceLink}
+            data:{licence_link: licenceLink}
         };
-        let response = await _client.executeQuery(request, true);
+        let response = await _client.processQuery(request, true);
         return response.data;
     }
 
@@ -477,9 +483,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/publications",
             headers: this.headers,
-            body: { publication: publication }
+            data:{ publication: publication }
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -493,9 +499,9 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/publications/" + publication.id,
             headers: this.headers,
-            body: { publication: publication }
+            data:{ publication: publication }
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -510,9 +516,9 @@ class RESTClient {
             method: 'put',
             baseURL: this.baseURL + '/fairsharing_records/' + recordID,
             headers: this.headers,
-            body: {fairsharing_record: {record_associations_attributes: relations}}
+            data:{fairsharing_record: {record_associations_attributes: relations}}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -526,9 +532,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/organisations",
             headers: this.headers,
-            body: { organisation: organisation }
+            data:{ organisation: organisation }
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -542,9 +548,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/grants",
             headers: this.headers,
-            body: { grant: grant }
+            data:{ grant: grant }
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -559,9 +565,9 @@ class RESTClient {
             method: "post",
             baseURL: _client.baseURL + "/organisation_links",
             headers: this.headers,
-            body: { organisation_link: organisationLink }
+            data:{ organisation_link: organisationLink }
         };
-        let response = await _client.executeQuery(request, true);
+        let response = await _client.processQuery(request, true);
         return response.data;
     }
 
@@ -576,9 +582,9 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/organisation_links/" + linkID,
             headers: this.headers,
-            body: { organisation_link: organisationLink }
+            data:{ organisation_link: organisationLink }
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -594,7 +600,7 @@ class RESTClient {
             baseURL: _client.baseURL + "/organisation_links/" + linkID,
             headers: this.headers,
         };
-        let response = await _client.executeQuery(request, true);
+        let response = await _client.processQuery(request, true);
         return response.data;
     }
 
@@ -608,9 +614,9 @@ class RESTClient {
             method: "post",
             baseURL: this.baseURL + "/fairsharing_records/metadata_fields",
             headers: this.headers,
-            body: {type: type}
+            data:{type: type}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -624,7 +630,7 @@ class RESTClient {
             method: "get",
             baseURL: _client.baseURL + "/record_associations/allowed"
         };
-        let response = await _client.executeQuery(request);
+        let response = await _client.processQuery(request);
         return response.data;
     }
 
@@ -638,7 +644,7 @@ class RESTClient {
             baseURL: this.baseURL + "/users/profile_types",
             headers: this.headers,
         };
-        let response = await this.executeQuery(request);
+        let response = await this.processQuery(request);
         return response.data;
     }
 
@@ -658,9 +664,9 @@ class RESTClient {
             method: "put",
             baseURL: this.baseURL + "/maintenance_requests/" + maintenanceRequest,
             headers: this.headers,
-            body: { maintenance_request: {status: newStatus}}
+            data:{ maintenance_request: {status: newStatus}}
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -676,7 +682,7 @@ class RESTClient {
             baseURL: _client.baseURL + "/fairsharing_records/" + id,
             headers: this.headers,
         };
-        let response = await _client.executeQuery(request, true);
+        let response = await _client.processQuery(request, true);
         return response.data;
     }
 
@@ -689,7 +695,7 @@ class RESTClient {
             method: "get",
             baseURL: this.baseURL + "/files/no_dois",
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -704,7 +710,7 @@ class RESTClient {
             baseURL: `${this.baseURL}/fairsharing_records/${recordID}`,
             headers: this.headers
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data;
     }
 
@@ -738,9 +744,9 @@ class RESTClient {
             method: "post",
             baseURL: `${this.baseURL}/search/${tagType}`,
             headers: this.headers,
-            body: body
+            data:body
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data
     }
 
@@ -805,7 +811,7 @@ class RESTClient {
             baseURL: `${this.baseURL}/${tagType}/${tagID}`,
             headers: this.headers,
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data
     }
 
@@ -872,42 +878,135 @@ class RESTClient {
             method: "post",
             baseURL: baseURL.href,
             headers: this.headers,
-            body: body
+            data:body
         };
-        let response = await this.executeQuery(request, true);
+        let response = await this.processQuery(request, true);
         return response.data
     }
 
+
     /* *******************************************************************
-                                OTHER METHODS
+                            CACHE AND OTHER METHODS
     *******************************************************************  */
 
     /**
-     * Trigger the given query with Axios
+     * Process the query and either get the data from the cache or execute the axios request
      * @param {Object} query - the query to execute
      * @param {Boolean} mustBeLoggedIn - should the user be logged in before attempting to execute the query
      * @returns {Promise}
      */
-    async executeQuery(query, mustBeLoggedIn = false) {
+    async processQuery(query, mustBeLoggedIn = false) {
         if (mustBeLoggedIn) this.is_loggedIn()
-        if (query.body) query.body = JSON.stringify(query.body)
         try {
-            const rawResponse =  await fetch(query.baseURL, query);
-            const response = await rawResponse.json()
-
-            let cache = localStorage.getItem("requestsCache")
-            cache = cache ? JSON.parse(cache) : {}
-            cache[query.baseURL] = response
-            localStorage.setItem("requestsCache", JSON.stringify(cache))
-
+            const URL = query.baseURL;
+            let response = null;
+            if (query.method === "get" && this.cacheEnabled) {
+                response = this.getCachedData(URL)
+            }
+            if (!response) {
+                response = await this.executeQuery(query);
+                if (query.method === "get" && this.cacheEnabled) {
+                    this.setCachedData(URL, response)
+                }
+            }
             return (response.data) ? response : {data: response}
         }
         catch(e){
-            return({body: {data: e}});
+            return({data: { error: e }});
         }
+    }
+
+    /**
+     * Wrapper for easier axios mocks
+     * @param query
+     * @returns {Promise}
+     */
+    async executeQuery(query){ return axios(query) }
+
+    /**
+     * Build the cache using local storage
+     */
+    clearCache(){
+        if (storageAvailable()) {
+            localStorage.setItem("requestsCache", JSON.stringify({}));
+        }
+    }
+
+    /**
+     * Given a query url tries to find it in the cache.
+     * @param {String} URL
+     * @returns {Object|null}
+     */
+    getCachedData(URL) {
+        let cache = localStorage.getItem("requestsCache")
+        cache = cache ? JSON.parse(cache) : {}
+        let data =  cache[URL] ? cache[URL] : null
+        if (data && data['expiry'] && this.cacheEnabled) {
+            data = new Date().getTime() > new Date(data['expiry']).getTime ? null : data
+        }
+        return (data && data.data) ? data.data : null
+    }
+
+    /**
+     * Write the current response in the local storage
+     * @param {String} url - a URL representing the GET query
+     * @param {Object} response - the response object received from the server
+     */
+    setCachedData(url, response) {
+        let cache = JSON.parse(localStorage.getItem("requestsCache"))
+        let data = { data: response }
+        if (this.cacheEnabled) data.expiry = this.generateExpirationDate()
+        cache[url] = data
+        localStorage.setItem("requestsCache", JSON.stringify(cache))
+    }
+
+    /**
+     * Method to enable cached data
+     * @param {Number} timer - Time in hours after which the cached data will expire.
+     */
+    enableCache(timer = 24){
+        if (storageAvailable()) {
+            this.cacheEnabled = true
+            this.cacheExpiry = timer
+        }
+        else console.error("The cache relies on localStorage and thus is supported in this environment.")
+    }
+
+    /**
+     * Method to disable cached data
+     */
+    disableCache() {
+        this.cacheEnabled = false
+        this.cacheExpiry = 24
+    }
+
+    /**
+     * Generate an expiration date based on the now + expiration timer
+     * @returns {Date}
+     */
+    generateExpirationDate() {
+        return new Date(new Date().getTime() + (this.cacheExpiry * 60 * 60 * 1000))
     }
 }
 
-module.exports = (url, clientID) => {
-    return new RESTClient(url, clientID)
+
+/**
+ * Test if there's an available localStorage before accessing it.
+ * @returns {boolean}
+ */
+function storageAvailable() {
+    try {
+        let storage = window["localStorage"],
+            x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return false;
+    }
+}
+
+export default function client(url) {
+    return new RESTClient(url)
 }
