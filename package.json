@@ -2,10 +2,11 @@
   "name": "fairsharing-api-client",
   "version": "0.0.1",
   "description": "The official Javascript FAIRSharing API client",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "test": "npm run test"
+    "test": "npm run test",
+    "doc": "jsdoc -c doc/doc.conf.json -R README.md"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,8 @@
     "webpack-dev-server": "^4.3.0",
     "webpack-cli": "^4.8.0",
     "babel-loader": "^8.1.0",
-    "@babel/core": "^7.11.6"
+    "@babel/core": "^7.11.6",
+    "jsdoc": "^3.6.7",
+    "tui-jsdoc-template": "1.2.2"
   }
 }
