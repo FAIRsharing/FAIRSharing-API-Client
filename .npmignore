@@ -1,0 +1,17 @@
+/node_modules/
+/node_modules/*
+package-lock.json
+.idea/
+/doc/html/*
+/doc/html/
+/coverage/*
+/coverage/
+.babelrc
+jest.config.js
+webpack.config.js
+tests/*
+tests/
+doc/
+doc/*
+.github/
+/github/*

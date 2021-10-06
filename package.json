@@ -18,7 +18,7 @@
     "Client",
     "API"
   ],
-  "author": "Dominique Batista",
+  "author": "Dominique Batista <dominique.batista@oerc.ox.ac.uk>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/FAIRsharing/FAIRSharing-API-Client/issues"
@@ -28,20 +28,21 @@
     "axios": "^0.22.0"
   },
   "devDependencies": {
-    "webpack": "^5.56.1",
-    "webpack-dev-server": "^4.3.0",
-    "webpack-cli": "^4.8.0",
-    "babel-loader": "^8.1.0",
     "@babel/core": "^7.11.6",
-    "jsdoc": "^3.6.7",
-    "tui-jsdoc-template": "1.2.2",
-    "jest": "^27.2.4",
-    "babel-polyfill": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "@babel/plugin-transform-runtime": "^7.11.5",
-    "@babel/preset-env": "^7.11.5",
     "@babel/plugin-proposal-export-default-from": "^7.10.4",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
-    "babel-jest": "26.3.0"
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "babel-jest": "26.3.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "jest": "^27.2.4",
+    "jsdoc": "^3.6.7",
+    "terser-webpack-plugin": "^5.2.4",
+    "tui-jsdoc-template": "1.2.2",
+    "webpack": "^5.56.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.3.0"
   }
 }
