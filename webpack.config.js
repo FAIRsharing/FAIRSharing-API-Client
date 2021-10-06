@@ -14,7 +14,7 @@ module.exports = {
         path: __dirname,
         filename: './dist/index.js',
         library: "client",
-        libraryTarget: 'window',
+        libraryTarget: "window",
         libraryExport: 'default',
     },
     resolve: {

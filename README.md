@@ -1,3 +1,7 @@
+[![Build](https://github.com/FAIRsharing/FAIRSharing-API-Client/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/FAIRsharing/FAIRSharing-API-Client/actions/workflows/unit_tests.yml)
+[![Documentation](https://api.netlify.com/api/v1/badges/edd1e884-83d9-46f4-902c-b4078c3acc22/deploy-status)](https://app.netlify.com/sites/fairsharingapidoc/deploys)
+[![Coverage Status](https://coveralls.io/repos/github/FAIRsharing/FAIRSharing-API-Client/badge.svg?branch=main)](https://coveralls.io/github/FAIRsharing/FAIRSharing-API-Client?branch=main)
+
 # FAIRSharing-API-Client
 
 The JavaScript client for the FAIRSharing API. Works with node, webpack and native JS.
@@ -32,7 +36,7 @@ You can then transpile this code with webpack to make it available in the browse
 3 - In the browser:
 ```html
 <!-- Import the transpiled code -->
-<script type="application/javascript" src="/node_modules/fairsharing-api-client/dist/index.js">
+<script type="application/javascript" src="./node_modules/fairsharing-api-client/dist/index.js">
 </script>
 <!-- Now, client is a function available through window.client() -->
 <script type="module">
