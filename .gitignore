@@ -4,3 +4,5 @@ package-lock.json
 .idea/
 /doc/html/*
 /doc/html/
+/coverage/*
+/coverage/
