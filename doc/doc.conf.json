@@ -15,7 +15,7 @@
         "template": "./node_modules/tui-jsdoc-template"
     },
     "templates": {
-        "name": "FAIRSharing client API Documentation",
+        "name": "FAIRSharing API Client Documentation",
         "logo": {
             "url": "https://fairsharing.org/static/img/home/svg/FAIRsharing-sdp.svg",
             "width": "200px",

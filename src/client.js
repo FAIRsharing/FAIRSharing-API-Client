@@ -9,6 +9,7 @@ class RESTClient {
     constructor(url){
         if (RESTClient._instance){
             this.baseURL = url;
+            RESTClient._instance = this;
             return RESTClient._instance;
         }
         RESTClient._instance = this;
