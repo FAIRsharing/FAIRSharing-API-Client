@@ -8,8 +8,9 @@ class RESTClient {
      */
     constructor(url){
         if (RESTClient._instance){
-            this.baseURL = url;
-            RESTClient._instance = this;
+            let client = RESTClient._instance
+            client.baseURL = url;
+            RESTClient._instance = client;
             return RESTClient._instance;
         }
         RESTClient._instance = this;
@@ -970,7 +971,7 @@ class RESTClient {
             this.cacheEnabled = true
             this.cacheExpiry = timer
         }
-        else console.error("The cache relies on localStorage and thus is supported in this environment.")
+        else console.info("The cache relies on localStorage and thus is supported in this environment.")
     }
 
     /**
