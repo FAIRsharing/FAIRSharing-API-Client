@@ -8,9 +8,7 @@ class RESTClient {
      */
     constructor(url){
         if (RESTClient._instance){
-            let client = RESTClient._instance
-            client.baseURL = url;
-            RESTClient._instance = client;
+            RESTClient._instance.baseURL = url;
             return RESTClient._instance;
         }
         RESTClient._instance = this;
@@ -944,7 +942,7 @@ class RESTClient {
         cache = cache ? JSON.parse(cache) : {}
         let data =  cache[URL] ? cache[URL] : null
         if (data && data['expiry'] && this.cacheEnabled) {
-            data = new Date().getTime() > new Date(data['expiry']).getTime ? null : data
+            data = new Date().getTime() > new Date(data['expiry']).getTime() ? null : data
         }
         return (data && data.data) ? data.data : null
     }
@@ -955,11 +953,13 @@ class RESTClient {
      * @param {Object} response - the response object received from the server
      */
     setCachedData(url, response) {
-        let cache = JSON.parse(localStorage.getItem("requestsCache"))
-        let data = { data: response }
-        if (this.cacheEnabled) data.expiry = this.generateExpirationDate()
-        cache[url] = data
-        localStorage.setItem("requestsCache", JSON.stringify(cache))
+        if (this.cacheEnabled) {
+            let cache = JSON.parse(localStorage.getItem("requestsCache"))
+            let data = {data: response}
+            data.expiry = this.generateExpirationDate()
+            cache[url] = data
+            localStorage.setItem("requestsCache", JSON.stringify(cache))
+        }
     }
 
     /**
