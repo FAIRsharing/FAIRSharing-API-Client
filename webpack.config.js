@@ -12,11 +12,11 @@ module.exports = {
         }],
     },
     output: {
-        path: __dirname,
-        filename: './dist/index.js',
+        path: __dirname + "/dist",
+        filename: 'index.js',
         library: "client",
-        libraryTarget: "window",
-        libraryExport: 'default',
+        libraryTarget: 'umd',
+        globalObject: 'this'
     },
     resolve: {
         alias: {
