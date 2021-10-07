@@ -65,8 +65,7 @@ class RESTClient {
             headers: this.headers
         };
         let response = await this.processQuery(request);
-        if (!response.error){
-            console.log(response)
+        if (!response.data.error){
             this.set_authentication_headers(response.data['jwt'])
         }
         return response.data;
@@ -921,6 +920,7 @@ class RESTClient {
      * @param query
      * @returns {Promise}
      */
+    /* istanbul ignore next */
     async executeQuery(query){ return axios(query) }
 
     /**
@@ -971,7 +971,7 @@ class RESTClient {
             this.cacheEnabled = true
             this.cacheExpiry = timer
         }
-        else console.info("The cache relies on localStorage and thus is supported in this environment.")
+        else console.info("The cache relies on localStorage and thus is not supported in this environment.")
     }
 
     /**

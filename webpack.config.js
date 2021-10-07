@@ -1,4 +1,5 @@
 const path = require("path");
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     mode: "development",
@@ -21,5 +22,18 @@ module.exports = {
         alias: {
             client: path.resolve(__dirname, 'src/client.js')
         }
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    format: {
+                        comments: false,
+                    },
+                },
+                extractComments: false,
+            })
+        ]
     }
 };

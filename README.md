@@ -1,5 +1,5 @@
 [![Build](https://github.com/FAIRsharing/FAIRSharing-API-Client/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/FAIRsharing/FAIRSharing-API-Client/actions/workflows/unit_tests.yml)
-[![Documentation](https://api.netlify.com/api/v1/badges/edd1e884-83d9-46f4-902c-b4078c3acc22/deploy-status)](https://app.netlify.com/sites/fairsharingapidoc/deploys)
+[![Documentation](https://api.netlify.com/api/v1/badges/edd1e884-83d9-46f4-902c-b4078c3acc22/deploy-status)](https://fairsharingapidoc.netlify.app)
 [![Coverage Status](https://coveralls.io/repos/github/FAIRsharing/FAIRSharing-API-Client/badge.svg?branch=main)](https://coveralls.io/github/FAIRsharing/FAIRSharing-API-Client?branch=main)
 
 # FAIRSharing-API-Client

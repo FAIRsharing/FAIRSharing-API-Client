@@ -5,7 +5,7 @@ const RESTClient = require('../../index.js').default
 let client;
 let endpoint = "example.com"
 
-describe("FAIRSharing Client", () => {
+describe("FAIRSharing Client in the browser environment", () => {
     beforeEach(() => {
         client = RESTClient(endpoint)
     });
@@ -62,4 +62,54 @@ describe("FAIRSharing Client", () => {
 
     })
 
+    it("can check if a user is logged in or not", () => {
+        const errorMessage = "Missing JWT. Please login first";
+        client.set_authentication_headers("123")
+        expect(() => {
+            return client.is_loggedIn()
+        }).not.toThrow(errorMessage)
+        client.set_authentication_headers(null)
+        expect(() => {
+            return client.is_loggedIn()
+        }).toThrow(errorMessage)
+    })
+
+    it("can validate tag types", () => {
+        const errorMessage = "tag type should be one of countries, domains, subjects, user_defined_tags, taxonomies, " +
+            "publications, record_types"
+        client.set_authentication_headers("123")
+        expect(() => {
+            return client.validate_tag_type("countries")
+        }).not.toThrow(errorMessage)
+        expect(() => {
+            return client.validate_tag_type("test")
+        }).toThrow(errorMessage)
+    })
+
+    it("can prepare a query", async () => {
+        let query = {method: "get", baseURL: "abc.com"}
+        let mockedServerData = { data: { message: "SUCCESS", jwt: "123" } }
+        let mockedCachedData = {data: "this is fake data"}
+        jest.spyOn(client, "executeQuery").mockImplementation(() => { return mockedServerData })
+        client.set_authentication_headers("123")
+        let response = await client.processQuery(query, true)
+        expect(response).toStrictEqual(mockedServerData)
+        client.enableCache()
+        jest.spyOn(client, "getCachedData").mockImplementation(() => { return null })
+        response = await client.processQuery(query)
+        let cachedResponse = client.getCachedData("abc.com")
+        expect(cachedResponse).toBeNull()
+        expect(mockedServerData).toStrictEqual(response)
+        jest.spyOn(client, "getCachedData").mockImplementation(() => { return mockedCachedData })
+        response = await client.processQuery(query)
+        expect(response).toStrictEqual(mockedCachedData)
+
+        const mockError = new Error("I am an error")
+        jest.spyOn(client, "executeQuery").mockImplementation(() => { throw mockError })
+        response = await client.processQuery({})
+        expect(response.data).toStrictEqual({error: mockError})
+
+        jest.clearAllMocks()
+        client.disableCache()
+    })
 })
