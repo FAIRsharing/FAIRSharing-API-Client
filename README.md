@@ -3,9 +3,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/FAIRsharing/FAIRSharing-API-Client/badge.svg?branch=main)](https://coveralls.io/github/FAIRsharing/FAIRSharing-API-Client?branch=main)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/caedac1ab73341759acc2b815aaff355)](https://www.codacy.com/gh/FAIRsharing/FAIRSharing-API-Client/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FAIRsharing/FAIRSharing-API-Client&amp;utm_campaign=Badge_Grade)
 
-# FAIRSharing-API-Client
+# FAIRsharing-API-Client
 
-The JavaScript client for the FAIRSharing API. Works with node, webpack and native JS.
+The JavaScript client for the FAIRsharing API. Works with node, webpack and native JS.
 
 ## Usage
 
