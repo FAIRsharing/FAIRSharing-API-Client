@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "test": "npm run test",
+    "test": "jest",
     "doc": "jsdoc -c doc/doc.conf.json -R README.md",
     "test:unit": "jest"
   },
