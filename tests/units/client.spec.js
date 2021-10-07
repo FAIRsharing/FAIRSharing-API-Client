@@ -5,7 +5,7 @@ const RESTClient = require('../../index.js').default
 let client;
 let endpoint = "example.com"
 
-describe("FAIRSharing Client", () => {
+describe("FAIRSharing Client with a browser", () => {
     beforeEach(() => {
         client = RESTClient(endpoint)
     });
@@ -60,6 +60,30 @@ describe("FAIRSharing Client", () => {
             done()
         }, 400)
 
+    });
+
+    it("can check if a user is logged in or not", () => {
+        const errorMessage = "Missing JWT. Please login first";
+        client.set_authentication_headers("123")
+        expect(() => {
+            return client.is_loggedIn()
+        }).not.toThrow(errorMessage)
+        client.set_authentication_headers(null)
+        expect(() => {
+            return client.is_loggedIn()
+        }).toThrow(errorMessage)
+    })
+
+    it("can validate tag types", () => {
+        const errorMessage = "tag type should be one of countries, domains, subjects, user_defined_tags, taxonomies, " +
+            "publications, record_types"
+        client.set_authentication_headers("123")
+        expect(() => {
+            return client.validate_tag_type("countries")
+        }).not.toThrow(errorMessage)
+        expect(() => {
+            return client.validate_tag_type("test")
+        }).toThrow(errorMessage)
     })
 
 })

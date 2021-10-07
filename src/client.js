@@ -971,7 +971,7 @@ class RESTClient {
             this.cacheEnabled = true
             this.cacheExpiry = timer
         }
-        else console.info("The cache relies on localStorage and thus is supported in this environment.")
+        else console.info("The cache relies on localStorage and thus is not supported in this environment.")
     }
 
     /**
