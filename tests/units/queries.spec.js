@@ -1,4 +1,4 @@
-const RESTClient = require('../../index.js').default
+const RESTClient = require('../../index.js')
 let client;
 let endpoint = "example.com"
 

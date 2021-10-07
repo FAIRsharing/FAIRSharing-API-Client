@@ -1009,6 +1009,6 @@ function storageAvailable() {
     }
 }
 
-export default function client(url) {
+module.exports = function client(url) {
     return new RESTClient(url)
 }
