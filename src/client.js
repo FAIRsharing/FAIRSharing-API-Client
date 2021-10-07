@@ -65,8 +65,7 @@ class RESTClient {
             headers: this.headers
         };
         let response = await this.processQuery(request);
-        if (!response.error){
-            console.log(response)
+        if (!response.data.error){
             this.set_authentication_headers(response.data['jwt'])
         }
         return response.data;

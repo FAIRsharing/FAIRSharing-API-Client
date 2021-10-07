@@ -5,7 +5,7 @@ const RESTClient = require('../../index.js').default
 let client;
 let endpoint = "example.com"
 
-describe("FAIRSharing Client with a browser", () => {
+describe("FAIRSharing Client in the browser environment", () => {
     beforeEach(() => {
         client = RESTClient(endpoint)
     });
