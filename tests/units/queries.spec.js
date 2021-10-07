@@ -13,11 +13,9 @@ describe("FAIRSharing Client queries", () => {
         let response = await client.login("username", "password");
         expect(client.headers.Authorization).toBe("Bearer 123")
         expect(response).toBe(mockedData.data)
-
         response = await client.logout()
         expect(client.headers.Authorization).toBe(undefined)
         expect(response).toBe(mockedData.data)
-
         jest.clearAllMocks();
         jest.spyOn(client, "executeQuery").mockImplementation(() => {
             return {data: {error: "Not authorized"}}
@@ -25,6 +23,6 @@ describe("FAIRSharing Client queries", () => {
         response = await client.login("username", "password");
         expect(response).toStrictEqual({error: "Not authorized"})
         expect(client.headers.Authorization).toBe(undefined)
-
+        jest.clearAllMocks();
     })
 })

@@ -920,6 +920,7 @@ class RESTClient {
      * @param query
      * @returns {Promise}
      */
+    /* istanbul ignore next */
     async executeQuery(query){ return axios(query) }
 
     /**

@@ -60,7 +60,7 @@ describe("FAIRSharing Client in the browser environment", () => {
             done()
         }, 400)
 
-    });
+    })
 
     it("can check if a user is logged in or not", () => {
         const errorMessage = "Missing JWT. Please login first";
@@ -86,4 +86,30 @@ describe("FAIRSharing Client in the browser environment", () => {
         }).toThrow(errorMessage)
     })
 
+    it("can prepare a query", async () => {
+        let query = {method: "get", baseURL: "abc.com"}
+        let mockedServerData = { data: { message: "SUCCESS", jwt: "123" } }
+        let mockedCachedData = {data: "this is fake data"}
+        jest.spyOn(client, "executeQuery").mockImplementation(() => { return mockedServerData })
+        client.set_authentication_headers("123")
+        let response = await client.processQuery(query, true)
+        expect(response).toStrictEqual(mockedServerData)
+        client.enableCache()
+        jest.spyOn(client, "getCachedData").mockImplementation(() => { return null })
+        response = await client.processQuery(query)
+        let cachedResponse = client.getCachedData("abc.com")
+        expect(cachedResponse).toBeNull()
+        expect(mockedServerData).toStrictEqual(response)
+        jest.spyOn(client, "getCachedData").mockImplementation(() => { return mockedCachedData })
+        response = await client.processQuery(query)
+        expect(response).toStrictEqual(mockedCachedData)
+
+        const mockError = new Error("I am an error")
+        jest.spyOn(client, "executeQuery").mockImplementation(() => { throw mockError })
+        response = await client.processQuery({})
+        expect(response.data).toStrictEqual({error: mockError})
+
+        jest.clearAllMocks()
+        client.disableCache()
+    })
 })
