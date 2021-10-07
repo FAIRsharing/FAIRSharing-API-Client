@@ -939,7 +939,7 @@ class RESTClient {
      */
     getCachedData(URL) {
         let cache = localStorage.getItem("requestsCache")
-        cache = cache ? JSON.parse(cache) : {}
+        cache = cache ? JSON.parse(cache) : /* istanbul ignore next */ {}
         let data =  cache[URL] ? cache[URL] : null
         if (data && data['expiry'] && this.cacheEnabled) {
             data = new Date().getTime() > new Date(data['expiry']).getTime() ? null : data
