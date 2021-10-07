@@ -14,9 +14,8 @@ module.exports = {
     output: {
         path: __dirname + "/dist",
         filename: 'index.js',
-        library: "client",
-        libraryTarget: 'umd',
-        globalObject: 'this'
+        library: "fairsharingClient",
+        libraryTarget: 'var'
     },
     resolve: {
         alias: {
