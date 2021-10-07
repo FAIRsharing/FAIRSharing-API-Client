@@ -1,1 +1,2 @@
-module.exports = require('./src/client')
+const fairsharingClient = require('./src/client').default;
+module.exports = fairsharingClient;
