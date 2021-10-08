@@ -2,4 +2,4 @@
     # Define which paths this specific [[headers]] block will cover.
     for = "/dist/*"
     [headers.values]
-    cache-control="public, max-age=30672000"
+    max-age=30672000
