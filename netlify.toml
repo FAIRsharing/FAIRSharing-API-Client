@@ -1,6 +1,6 @@
 [[headers]]
     # Define which paths this specific [[headers]] block will cover.
-    for = "/dist/*"
+    for = "/index.js"
     [headers.values]
     cache-control = '''
     public
