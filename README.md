@@ -44,6 +44,12 @@ You can then transpile this code with webpack to make it available in the browse
 <!-- Import the transpiled code -->
 <script type="application/javascript" src="./node_modules/fairsharing-api-client/dist/index.js">
 </script>
+<!-- Alternatively, you can use it directly from the CDN 
+<script type="application/javascript" src="https://fairsharingapiclientcdn.netlify.app/index.js">
+</script>
+-->
+
+
 <!-- Now, client is a function available through window.client() -->
 <script type="module">
     const URL = 'https://api.fairsharing.org'
