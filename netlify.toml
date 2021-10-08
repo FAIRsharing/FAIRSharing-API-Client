@@ -1,0 +1,7 @@
+[[headers]]
+    # Define which paths this specific [[headers]] block will cover.
+    for = "/index.js"
+    [headers.values]
+    cache-control = '''
+    public
+	max-age=30672000'''
