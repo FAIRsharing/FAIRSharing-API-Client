@@ -23,10 +23,10 @@ npm install fairsharing-api-client
 ```js
 // import the client
 const fairsharingClient = require("fairsharing-api-client")  
-const URL = "https://api.fairsharing.org"
+const server_url = "https://api.fairsharing.org"
 
 // create the class by feeding it the URL of the API.
-let client = fairsharingClient(URL)
+let client = fairsharingClient(server_url)
 
 // Login with a promise
 client.login("user", "password").then(async () => {
@@ -52,8 +52,8 @@ You can then transpile this code with webpack to make it available in the browse
 
 <!-- Now, client is a function available through window.client() -->
 <script type="module">
-    const URL = 'https://api.fairsharing.org'
-    let client = fairsharingClient(URL)
+    const server_url = 'https://api.fairsharing.org'
+    let client = fairsharingClient(server_url)
     // When in the browser you can enable a cache that relies on the localStorage
     // The input is a timer in hours, default to 24 if none is given
     client.enableCache(1)
