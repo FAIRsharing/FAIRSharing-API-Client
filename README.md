@@ -124,4 +124,10 @@ and [`tui-jsdoc-template`](https://github.com/nhn/tui.jsdoc-template):
 ```shell
 npm run doc
 ```
+
+To generate the private methods run:
+```shell
+npm run doc:private
+```
+
 The configuration file for the documentation in is [`/doc/doc.conf.js`](https://github.com/FAIRsharing/FAIRSharing-API-Client/tree/main/doc)

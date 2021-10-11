@@ -18,7 +18,7 @@ describe("FAIRSharing Client queries", () => {
     });
 
     afterEach( () => {
-        client.set_authentication_headers(null)
+        client.setAuthenticationHeaders(null)
         jest.clearAllMocks();
     })
 
@@ -41,7 +41,7 @@ describe("FAIRSharing Client queries", () => {
     })
 
     it("can validate a token", async () => {
-        client.set_authentication_headers("123")
+        client.setAuthenticationHeaders("123")
         let mockedData = { data: { message: "SUCCESS", jwt: "123", success: true } }
         jest.spyOn(client, "executeQuery").mockImplementation(() => { return mockedData })
         let response = await client.validateToken()
@@ -54,7 +54,7 @@ describe("FAIRSharing Client queries", () => {
     })
 
     it("can execute bunch of queries", async () => {
-        client.set_authentication_headers("123")
+        client.setAuthenticationHeaders("123")
         let mockedData = { message: "SUCCESS", jwt: "123" }
         jest.spyOn(client, "executeQuery").mockImplementation(() => { return mockedData })
 
@@ -70,7 +70,7 @@ describe("FAIRSharing Client queries", () => {
     })
 
     it("can search records", async () => {
-        client.set_authentication_headers("123")
+        client.setAuthenticationHeaders("123")
         let mockedData = { message: "SUCCESS" }
         let query = {
             q: "GenBank"
