@@ -63,6 +63,8 @@ client.login("user", "password").then(async () => {
     console.log(types)
     // Logout after you are done
     await client.logout();
+}).catch((e)=> {
+    console.log("ERROR:", e)
 })
 ```
 You can then transpile this code with webpack to make it available in the browser or execute it with node.
@@ -96,6 +98,8 @@ You can then transpile this code with webpack to make it available in the browse
         // Logout and clear the cache when you are done
         await client.logout();
         client.clearCache();
+    }).catch((e)=> {
+        console.log("ERROR:", e)
     })
 </script>
 ```

@@ -896,23 +896,14 @@ class RESTClient {
      */
     async processQuery(query, mustBeLoggedIn = false) {
         if (mustBeLoggedIn) this.is_loggedIn()
-        try {
-            const URL = query.baseURL;
-            let response = null;
-            if (query.method === "get" && this.cacheEnabled) {
-                response = this.getCachedData(URL)
-            }
-            if (!response) {
-                response = await this.executeQuery(query);
-                if (query.method === "get" && this.cacheEnabled) {
-                    this.setCachedData(URL, response)
-                }
-            }
-            return (response.data) ? response : {data: response}
+        const URL = query.baseURL;
+        let response = null;
+        if (query.method === "get" && this.cacheEnabled) response = this.getCachedData(URL)
+        if (!response) {
+            response = await this.executeQuery(query);
+            if (response && query.method === "get" && this.cacheEnabled) this.setCachedData(URL, response)
         }
-        catch(e){
-            return({data: { error: e }});
-        }
+        return (response.data) ? response : {data: response}
     }
 
     /**

@@ -104,11 +104,6 @@ describe("FAIRSharing Client in the browser environment", () => {
         response = await client.processQuery(query)
         expect(response).toStrictEqual(mockedCachedData)
 
-        const mockError = new Error("I am an error")
-        jest.spyOn(client, "executeQuery").mockImplementation(() => { throw mockError })
-        response = await client.processQuery({})
-        expect(response.data).toStrictEqual({error: mockError})
-
         jest.clearAllMocks()
         client.disableCache()
     })
