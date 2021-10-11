@@ -13,7 +13,7 @@ module.exports = {
     },
     output: {
         path: __dirname + "/dist",
-        filename: 'index.js',
+        filename: 'fairsharing.min.js',
         library: "fairsharingClient",
         libraryTarget: 'var'
     },

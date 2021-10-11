@@ -1,6 +1,6 @@
 [[headers]]
     # Define which paths this specific [[headers]] block will cover.
-    for = "/index.js"
+    for = "/fairsharing.min.js"
     [headers.values]
     cache-control = '''
     public
