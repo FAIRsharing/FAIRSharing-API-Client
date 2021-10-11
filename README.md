@@ -16,7 +16,7 @@ The JavaScript client for the FAIRsharing API. Works with node, webpack and nati
 
 ### 1 - Install 
 
-#### a - From npm
+#### a - From npm (not available yet)
 ```shell
 npm install fairsharing-api-client
 ```
