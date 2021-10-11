@@ -42,9 +42,9 @@ describe("FAIRSharing Client in the browser environment", () => {
     })
 
     it("can set and delete an authentication token", () => {
-        client.set_authentication_headers("abc");
+        client.setAuthenticationHeaders("abc");
         expect(client.headers.Authorization).toBe('Bearer abc')
-        client.set_authentication_headers(null);
+        client.setAuthenticationHeaders(null);
         expect(client.headers.Authorization).toBe(undefined)
     })
 
@@ -64,25 +64,25 @@ describe("FAIRSharing Client in the browser environment", () => {
 
     it("can check if a user is logged in or not", () => {
         const errorMessage = "Missing JWT. Please login first";
-        client.set_authentication_headers("123")
+        client.setAuthenticationHeaders("123")
         expect(() => {
-            return client.is_loggedIn()
+            return client.isLoggedIn()
         }).not.toThrow(errorMessage)
-        client.set_authentication_headers(null)
+        client.setAuthenticationHeaders(null)
         expect(() => {
-            return client.is_loggedIn()
+            return client.isLoggedIn()
         }).toThrow(errorMessage)
     })
 
     it("can validate tag types", () => {
         const errorMessage = "tag type should be one of countries, domains, subjects, user_defined_tags, taxonomies, " +
             "publications, record_types"
-        client.set_authentication_headers("123")
+        client.setAuthenticationHeaders("123")
         expect(() => {
-            return client.validate_tag_type("countries")
+            return client.validateTagType("countries")
         }).not.toThrow(errorMessage)
         expect(() => {
-            return client.validate_tag_type("test")
+            return client.validateTagType("test")
         }).toThrow(errorMessage)
     })
 
@@ -91,7 +91,7 @@ describe("FAIRSharing Client in the browser environment", () => {
         let mockedServerData = { data: { message: "SUCCESS", jwt: "123" } }
         let mockedCachedData = {data: "this is fake data"}
         jest.spyOn(client, "executeQuery").mockImplementation(() => { return mockedServerData })
-        client.set_authentication_headers("123")
+        client.setAuthenticationHeaders("123")
         let response = await client.processQuery(query, true)
         expect(response).toStrictEqual(mockedServerData)
         client.enableCache()
@@ -103,11 +103,6 @@ describe("FAIRSharing Client in the browser environment", () => {
         jest.spyOn(client, "getCachedData").mockImplementation(() => { return mockedCachedData })
         response = await client.processQuery(query)
         expect(response).toStrictEqual(mockedCachedData)
-
-        const mockError = new Error("I am an error")
-        jest.spyOn(client, "executeQuery").mockImplementation(() => { throw mockError })
-        response = await client.processQuery({})
-        expect(response.data).toStrictEqual({error: mockError})
 
         jest.clearAllMocks()
         client.disableCache()

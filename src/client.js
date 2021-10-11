@@ -29,23 +29,27 @@ class RESTClient {
 
     /**
      * Method to add authorisation token to the headers.
+     * @private
      * @param jwt - the user's json web token
      * @return {JSON} - headers with authorisation field added
      */
-    set_authentication_headers(jwt) {
+    setAuthenticationHeaders(jwt) {
         if (jwt) this.headers['Authorization'] = `Bearer ${jwt}`;
         else delete this.headers['Authorization']
     }
 
     /**
      * Makes sure the user is logged in to before triggering the query.
+     * @private
      */
-    is_loggedIn() {
+    isLoggedIn() {
         if (!this.headers.Authorization) throw Error("Missing JWT. Please login first");
     }
 
     /**
      * Method to log in the user and set the JWT into the headers
+     * @example
+     * client.login({username: "username", password: "password"}).then((res) => {console.log(res)})
      * @param username - name of the user
      * @param password - password of the user
      * @return {Promise} - the response of the server
@@ -66,13 +70,15 @@ class RESTClient {
         };
         let response = await this.processQuery(request);
         if (!response.data.error){
-            this.set_authentication_headers(response.data['jwt'])
+            this.setAuthenticationHeaders(response.data['jwt'])
         }
         return response.data;
     }
 
     /**
      * Logout the user from the back, expiring the current jwt.
+     * @example
+     * client.logout().then((res) => {console.log(res)})
      * @returns {Promise}
      */
     async logout(){
@@ -82,12 +88,14 @@ class RESTClient {
             headers: this.headers
         };
         let response = await this.processQuery(request);
-        this.set_authentication_headers(null)
+        this.setAuthenticationHeaders(null)
         return response.data;
     }
 
     /**
-     *  Method to create a new user
+     * Method to create a new user
+     * @example
+     * client.createAccount({username: "username", email: "email@example.com", password: "pwd", repeatPassword: "pwd"}).then((res) => {console.log(res)})
      * @param {Object} userAccount - the user account to create
      * @returns {Promise} response - server response
      */
@@ -104,6 +112,8 @@ class RESTClient {
 
     /**
      * Validate the account given the corresponding token received in the email
+     * @example
+     * client.confirmAccount({token: "tokenFromEmail"}).then((res) => { console.log(res) })
      * @param {String} token - the account token to validate
      * @returns {Promise}
      */
@@ -119,6 +129,8 @@ class RESTClient {
 
     /**
      * Method to send a reset password link to the given email address
+     * @example
+     * client.requestResetPwd({email: "email@exmaple.com"}).then((res) => { console.log(res) })
      * @param {String} email to send the link to
      * @returns {Promise}
      */
@@ -301,7 +313,7 @@ class RESTClient {
             headers: this.headers
         };
         let response = await this.processQuery(request, true);
-        if (!response.data.success) this.set_authentication_headers(null)
+        if (!response.data.success) this.setAuthenticationHeaders(null)
         return response.data;
     }
 
@@ -422,12 +434,14 @@ class RESTClient {
     }
 
     /**
-     * TODO: TEST AND WRITE THE INPUT EXAMPLE
-     * Create new a licence link between a licence and a record
-     * @param {Object} licenceLink - the licence link to create: contains the licence id and the record id.
-     * @returns {Promise}
-     */
+    * Create new a licence link between a licence and a record
+    * @example
+    * client.createLicenceLink({licenceID: 1, recordID: 1}).then((res) => { console.log(res) })
+    * @param {Object} licenceLink - the licence link to create: contains the licence id and the record id.
+    * @returns {Promise}
+    */
     async createLicenceLink(licenceLink){
+        /* TODO: TEST AND WRITE THE INPUT EXAMPLE */
         let _client = this;
         const request = {
             method: "post",
@@ -715,9 +729,10 @@ class RESTClient {
 
     /**
      * Validates the tag type against allowed types
+     * @private
      * @param {String} tagType
      */
-    validate_tag_type(tagType) {
+    validateTagType(tagType) {
         const allowed = [
             "countries",
             "domains",
@@ -737,7 +752,7 @@ class RESTClient {
      * @returns {Promise}
      */
     async searchTags(tagType, query= null) {
-        this.validate_tag_type(tagType);
+        this.validateTagType(tagType);
         const body = query ? {q: query} : {};
         const request = {
             method: "post",
@@ -759,41 +774,41 @@ class RESTClient {
     /**
      * Helper to get domains
      * @param {String} query - optional query string
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getDomains(query = null) { return await this.searchTags("domains", query) }
 
     /**
      * Helper to get subjects
      * @param {String} query - optional query string
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getSubjects(query = null) { return await this.searchTags("subjects", query) }
 
     /**
      * Helper to get user defined tags
      * @param {String} query - optional query string
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getUserDefinedTags(query = null) { return await this.searchTags("user_defined_tags", query) }
 
     /**
      * Helper to get taxonomies terms
      * @param {String} query - optional query string
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getTaxonomies(query = null) { return await this.searchTags("taxonomies", query) }
 
     /**
      * Helper to get publications
      * @param {String} query - optional query string
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getPublications(query) { return await this.searchTags("publications", query) }
 
     /**
      * Helper to get recordTypes
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getRecordTypes() { return await this.searchTags("record_types") }
 
@@ -801,10 +816,10 @@ class RESTClient {
      * Get the given tag type
      * @param tagType
      * @param tagID
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getTag(tagType, tagID) {
-        this.validate_tag_type(tagType)
+        this.validateTagType(tagType)
         const request = {
             method: "get",
             baseURL: `${this.baseURL}/${tagType}/${tagID}`,
@@ -817,56 +832,58 @@ class RESTClient {
     /**
      * Helper to get a country
      * @param {Number} countryID - ID of the country to get
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getCountry(countryID) { return await this.getTag("countries", countryID)}
 
     /**
      * Helper to get a domain
      * @param {Number} domainID - ID of the domain to get
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getDomain(domainID) { return await this.getTag("domains", domainID) }
 
     /**
      * Helper to get a subject
      * @param {Number} subjectID - ID of the subject to get
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getSubject(subjectID) { return await this.getTag("subjects", subjectID) }
 
     /**
      * Helper to get a user defined tag
      * @param {Number} tagID - ID of the user defined tag to get
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getUserDefinedTag(tagID) { return await this.getTag("user_defined_tags", tagID) }
 
     /**
      * Helper to get a user taxonomy term
      * @param {Number} speciesID - ID of the taxonomy term to get
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getSpecies(speciesID) { return await this.getTag("user_defined_tags", speciesID) }
 
     /**
      * Helper to get a user taxonomy term
      * @param {Number} taxonID - ID of the taxonomy term to get
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getTaxon(taxonID) { return await this.getTag("taxonomies", taxonID) }
 
     /**
      * Helper to get a publication
      * @param {Number} pubID - ID of the pbulication to get
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async getPublication(pubID) {return await this.getTag("user_defined_tags", pubID) }
 
     /**
      * Search FAIRsharing records
+     * @example
+     * client.searchRecords({q: "GenBank", page: 1, perPage: 2}).then((res) => {console.log(res)})
      * @param {Object} query - optional query string
-     * @returns {Promise<*>}
+     * @returns {Promise}
      */
     async searchRecords(query = {}) {
         const body = query.q ? {q: query.q} : {};
@@ -890,33 +907,26 @@ class RESTClient {
 
     /**
      * Process the query and either get the data from the cache or execute the axios request
+     * @private
      * @param {Object} query - the query to execute
      * @param {Boolean} mustBeLoggedIn - should the user be logged in before attempting to execute the query
      * @returns {Promise}
      */
     async processQuery(query, mustBeLoggedIn = false) {
-        if (mustBeLoggedIn) this.is_loggedIn()
-        try {
-            const URL = query.baseURL;
-            let response = null;
-            if (query.method === "get" && this.cacheEnabled) {
-                response = this.getCachedData(URL)
-            }
-            if (!response) {
-                response = await this.executeQuery(query);
-                if (query.method === "get" && this.cacheEnabled) {
-                    this.setCachedData(URL, response)
-                }
-            }
-            return (response.data) ? response : {data: response}
+        if (mustBeLoggedIn) this.isLoggedIn()
+        const URL = query.baseURL;
+        let response = null;
+        if (query.method === "get" && this.cacheEnabled) response = this.getCachedData(URL)
+        if (!response) {
+            response = await this.executeQuery(query);
+            if (response && query.method === "get" && this.cacheEnabled) this.setCachedData(URL, response)
         }
-        catch(e){
-            return({data: { error: e }});
-        }
+        return (response.data) ? response : {data: response}
     }
 
     /**
      * Wrapper for easier axios mocks
+     * @private
      * @param query
      * @returns {Promise}
      */
@@ -934,6 +944,7 @@ class RESTClient {
 
     /**
      * Given a query url tries to find it in the cache.
+     * @private
      * @param {String} URL
      * @returns {Object|null}
      */
@@ -949,6 +960,7 @@ class RESTClient {
 
     /**
      * Write the current response in the local storage
+     * @private
      * @param {String} url - a URL representing the GET query
      * @param {Object} response - the response object received from the server
      */
@@ -984,6 +996,7 @@ class RESTClient {
 
     /**
      * Generate an expiration date based on the now + expiration timer
+     * * @private
      * @returns {Date}
      */
     generateExpirationDate() {
