@@ -133,16 +133,17 @@ If you want to test the code using [`jest`](https://github.com/facebook/jest):
 npm run test:unit
 ```
 
-#### Local documentation:
+#### Documentation:
+The online [documentation](https://fairsharingapidoc.netlify.app/) is under continuous deployment and is hosted at netlify. <br>
 If you want to generate the documentation locally using [`jsdoc`](https://github.com/jsdoc/jsdoc) 
 and [`tui-jsdoc-template`](https://github.com/nhn/tui.jsdoc-template):
 ```shell
 npm run doc
 ```
 
-To generate the private methods run:
+To generate the documentation for the private methods (developers only) run:
 ```shell
 npm run doc:private
 ```
 
-The configuration file for the documentation in is [`/doc/doc.conf.js`](https://github.com/FAIRsharing/FAIRSharing-API-Client/tree/main/doc)
+The configuration file for the documentation in is [`/doc/doc.conf.js`](https://github.com/FAIRsharing/FAIRSharing-API-Client/tree/main/doc).
