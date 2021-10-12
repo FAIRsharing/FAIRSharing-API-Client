@@ -49,7 +49,7 @@ class RESTClient {
     /**
      * Method to log in the user and set the JWT into the headers
      * @example
-     * client.login({username: "username", password: "password"}).then((res) => {console.log(res)})
+     * client.login({username: "username", password: "password"}).then((res) => {console.log(client.headers.Authorization)})
      * @param username - name of the user
      * @param password - password of the user
      * @return {Promise} - the response of the server
@@ -72,7 +72,7 @@ class RESTClient {
         if (!response.data.error){
             this.setAuthenticationHeaders(response.data['jwt'])
         }
-        return response.data;
+        return response;
     }
 
     /**
@@ -89,7 +89,7 @@ class RESTClient {
         };
         let response = await this.processQuery(request);
         this.setAuthenticationHeaders(null)
-        return response.data;
+        return response;
     }
 
     /**
@@ -106,8 +106,7 @@ class RESTClient {
             data:{user: userAccount},
             headers: this.headers
         };
-        let response = await this.processQuery(request);
-        return response.data;
+        return await this.processQuery(request);
     }
 
     /**
@@ -123,8 +122,7 @@ class RESTClient {
             baseURL: this.baseURL + "/users/confirmation?confirmation_token=" + token,
             headers: this.headers,
         };
-        let response = await this.processQuery(request);
-        return response.data;
+        return await this.processQuery(request);
     }
 
     /**
@@ -143,8 +141,7 @@ class RESTClient {
                 user: {email: email}
             }
         };
-        let response = await this.processQuery(request);
-        return response.data;
+        return await this.processQuery(request);
     }
 
     /**
@@ -159,8 +156,7 @@ class RESTClient {
             headers: this.headers,
             data:{user: user}
         };
-        let response = await this.processQuery(request);
-        return response.data;
+        return await this.processQuery(request);
     }
 
     /**
@@ -175,8 +171,7 @@ class RESTClient {
             headers: this.headers,
             data:{user: user}
         };
-        let response = await this.processQuery(request);
-        return response.data;
+        return await this.processQuery(request);
     }
 
     /**
@@ -191,8 +186,7 @@ class RESTClient {
             headers: this.headers,
             data:{user: user}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -208,8 +202,7 @@ class RESTClient {
             headers: headers,
             data:{password: password}
         };
-        let response = await this.processQuery(request);
-        return response.data;
+        return await this.processQuery(request);
     }
 
     /**
@@ -222,8 +215,7 @@ class RESTClient {
             baseURL: this.baseURL + "/users/edit",
             headers: this.headers
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -237,8 +229,7 @@ class RESTClient {
             baseURL: this.baseURL + `/user_admin/${userID}`,
             headers: this.headers
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -251,8 +242,7 @@ class RESTClient {
             baseURL: this.baseURL + "/user_admin/",
             headers: this.headers
         };
-        let response = await this.processQuery(request);
-        return response.data;
+        return await this.processQuery(request);
     }
 
     /**
@@ -267,8 +257,7 @@ class RESTClient {
             headers: this.headers,
             data:{user: newUser}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -283,8 +272,7 @@ class RESTClient {
             headers: this.headers,
             data:{user: newUser}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -298,8 +286,7 @@ class RESTClient {
             baseURL: this.baseURL + `/user_admin/${userID}` ,
             headers: this.headers,
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -314,7 +301,7 @@ class RESTClient {
         };
         let response = await this.processQuery(request, true);
         if (!response.data.success) this.setAuthenticationHeaders(null)
-        return response.data;
+        return response;
     }
 
 
@@ -334,8 +321,7 @@ class RESTClient {
             headers: this.headers,
             data:{fairsharing_record: record}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -351,8 +337,7 @@ class RESTClient {
             headers: this.headers,
             data:{fairsharing_record: record}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -366,8 +351,7 @@ class RESTClient {
             baseURL: this.baseURL + "/fairsharing_records/can_edit/" + recordID,
             headers: this.headers,
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -382,8 +366,7 @@ class RESTClient {
             headers: this.headers,
             data:{maintenance_request: {fairsharing_record_id: recordID}}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -397,8 +380,7 @@ class RESTClient {
             baseURL: this.baseURL + "/maintenance_requests/existing/" + recordID,
             headers: this.headers,
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -413,8 +395,7 @@ class RESTClient {
             headers: this.headers,
             data:{record_review: {fairsharing_record_id: recordID}}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -429,8 +410,7 @@ class RESTClient {
             headers: this.headers,
             data:{user_defined_tag: {label:term}}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -449,8 +429,7 @@ class RESTClient {
             headers: this.headers,
             data:{licence_link: licenceLink}
         };
-        let response = await _client.processQuery(request, true);
-        return response.data;
+        return await _client.processQuery(request, true);
     }
 
     /**
@@ -465,8 +444,7 @@ class RESTClient {
             baseURL: _client.baseURL + "/licence_links/" + licenceLinkID,
             headers: this.headers,
         };
-        let response = await _client.processQuery(request, true);
-        return response.data;
+        return await _client.processQuery(request, true);
     }
 
     /**
@@ -482,8 +460,7 @@ class RESTClient {
             headers: this.headers,
             data:{licence_link: licenceLink}
         };
-        let response = await _client.processQuery(request, true);
-        return response.data;
+        return await _client.processQuery(request, true);
     }
 
     /**
@@ -498,8 +475,7 @@ class RESTClient {
             headers: this.headers,
             data:{ publication: publication }
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -514,8 +490,7 @@ class RESTClient {
             headers: this.headers,
             data:{ publication: publication }
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -531,8 +506,7 @@ class RESTClient {
             headers: this.headers,
             data:{fairsharing_record: {record_associations_attributes: relations}}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -547,8 +521,7 @@ class RESTClient {
             headers: this.headers,
             data:{ organisation: organisation }
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -563,8 +536,7 @@ class RESTClient {
             headers: this.headers,
             data:{ grant: grant }
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -580,8 +552,7 @@ class RESTClient {
             headers: this.headers,
             data:{ organisation_link: organisationLink }
         };
-        let response = await _client.processQuery(request, true);
-        return response.data;
+        return await _client.processQuery(request, true);
     }
 
     /**
@@ -597,8 +568,7 @@ class RESTClient {
             headers: this.headers,
             data:{ organisation_link: organisationLink }
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -613,8 +583,7 @@ class RESTClient {
             baseURL: _client.baseURL + "/organisation_links/" + linkID,
             headers: this.headers,
         };
-        let response = await _client.processQuery(request, true);
-        return response.data;
+        return await _client.processQuery(request, true);
     }
 
     /**
@@ -629,8 +598,7 @@ class RESTClient {
             headers: this.headers,
             data:{type: type}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -643,8 +611,7 @@ class RESTClient {
             method: "get",
             baseURL: _client.baseURL + "/record_associations/allowed"
         };
-        let response = await _client.processQuery(request);
-        return response.data;
+        return await _client.processQuery(request);
     }
 
     /**
@@ -657,8 +624,7 @@ class RESTClient {
             baseURL: this.baseURL + "/users/profile_types",
             headers: this.headers,
         };
-        let response = await this.processQuery(request);
-        return response.data;
+        return await this.processQuery(request);
     }
 
 
@@ -679,8 +645,7 @@ class RESTClient {
             headers: this.headers,
             data:{ maintenance_request: {status: newStatus}}
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -695,21 +660,19 @@ class RESTClient {
             baseURL: _client.baseURL + "/fairsharing_records/" + id,
             headers: this.headers,
         };
-        let response = await _client.processQuery(request, true);
-        return response.data;
+        return await _client.processQuery(request, true);
     }
 
     /**
-     * Get records without DOIS
+     * Get records without a DOI
      * @returns {Promise}
      */
-    async getRecordsWoDOIs(){
+    async getRecordsWithoutDOI(){
         const request = {
             method: "get",
             baseURL: this.baseURL + "/files/no_dois",
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -723,8 +686,7 @@ class RESTClient {
             baseURL: `${this.baseURL}/fairsharing_records/${recordID}`,
             headers: this.headers
         };
-        let response = await this.processQuery(request, true);
-        return response.data;
+        return await this.processQuery(request, true);
     }
 
     /**
@@ -760,8 +722,7 @@ class RESTClient {
             headers: this.headers,
             data:body
         };
-        let response = await this.processQuery(request, true);
-        return response.data
+        return await this.processQuery(request, true)
     }
 
     /**
@@ -825,8 +786,7 @@ class RESTClient {
             baseURL: `${this.baseURL}/${tagType}/${tagID}`,
             headers: this.headers,
         };
-        let response = await this.processQuery(request, true);
-        return response.data
+        return await this.processQuery(request, true)
     }
 
     /**
@@ -873,7 +833,7 @@ class RESTClient {
 
     /**
      * Helper to get a publication
-     * @param {Number} pubID - ID of the pbulication to get
+     * @param {Number} pubID - ID of the publication to get
      * @returns {Promise}
      */
     async getPublication(pubID) {return await this.getTag("user_defined_tags", pubID) }
@@ -896,8 +856,7 @@ class RESTClient {
             headers: this.headers,
             data:body
         };
-        let response = await this.processQuery(request, true);
-        return response.data
+        return await this.processQuery(request, true);
     }
 
 
