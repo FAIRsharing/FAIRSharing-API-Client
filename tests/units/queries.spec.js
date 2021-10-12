@@ -27,16 +27,16 @@ describe("FAIRSharing Client queries", () => {
         jest.spyOn(client, "executeQuery").mockImplementation(() => { return mockedData })
         let response = await client.login("username", "password");
         expect(client.headers.Authorization).toBe("Bearer 123")
-        expect(response).toBe(mockedData.data)
+        expect(response).toBe(mockedData)
         response = await client.logout()
         expect(client.headers.Authorization).toBe(undefined)
-        expect(response).toBe(mockedData.data)
+        expect(response).toBe(mockedData)
         jest.clearAllMocks();
         jest.spyOn(client, "executeQuery").mockImplementation(() => {
             return {data: {error: "Not authorized"}}
         })
         response = await client.login("username", "password");
-        expect(response).toStrictEqual({error: "Not authorized"})
+        expect(response).toStrictEqual({data: {error: "Not authorized"}})
         expect(client.headers.Authorization).toBe(undefined)
     })
 
@@ -45,11 +45,11 @@ describe("FAIRSharing Client queries", () => {
         let mockedData = { data: { message: "SUCCESS", jwt: "123", success: true } }
         jest.spyOn(client, "executeQuery").mockImplementation(() => { return mockedData })
         let response = await client.validateToken()
-        expect(response).toStrictEqual(mockedData.data)
+        expect(response).toStrictEqual(mockedData)
         expect(client.headers.Authorization).toBe("Bearer 123")
         mockedData = { data: { message: "SUCCESS", jwt: "123", success: false } }
         response = await client.validateToken()
-        expect(response).toStrictEqual(mockedData.data)
+        expect(response).toStrictEqual(mockedData)
         expect(client.headers.Authorization).toBeUndefined()
     })
 
@@ -63,10 +63,10 @@ describe("FAIRSharing Client queries", () => {
             const methodArgs = methods[methodName]
             if (methodArgs) response = await executeMethodByName(methodName, client, methodArgs)
             else response = await executeMethodByName(methodName, client)
-            expect(response).toStrictEqual(mockedData)
+            expect(response.data).toStrictEqual(mockedData)
         }
         response = await client.getCountries();
-        expect(response).toStrictEqual(mockedData)
+        expect(response.data).toStrictEqual(mockedData)
     })
 
     it("can search records", async () => {
@@ -77,12 +77,12 @@ describe("FAIRSharing Client queries", () => {
         }
         jest.spyOn(client, "executeQuery").mockImplementation(() => { return mockedData })
         let response = await client.searchRecords(query)
-        expect(response).toStrictEqual({ message: 'SUCCESS' })
+        expect(response.data).toStrictEqual({ message: 'SUCCESS' })
         query.page = 1
         query.perPage = 10
         response = await client.searchRecords(query)
-        expect(response).toStrictEqual({ message: 'SUCCESS' })
+        expect(response.data).toStrictEqual({ message: 'SUCCESS' })
         response = await client.searchRecords()
-        expect(response).toStrictEqual({ message: 'SUCCESS' })
+        expect(response.data).toStrictEqual({ message: 'SUCCESS' })
     })
 })

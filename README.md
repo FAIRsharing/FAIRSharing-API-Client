@@ -1,10 +1,25 @@
-[![Build](https://github.com/FAIRsharing/FAIRSharing-API-Client/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/FAIRsharing/FAIRSharing-API-Client/actions/workflows/unit_tests.yml)
-[![Documentation](https://api.netlify.com/api/v1/badges/edd1e884-83d9-46f4-902c-b4078c3acc22/deploy-status)](https://fairsharingapidoc.netlify.app)
-[![Coverage Status](https://coveralls.io/repos/github/FAIRsharing/FAIRSharing-API-Client/badge.svg?branch=main)](https://coveralls.io/github/FAIRsharing/FAIRSharing-API-Client?branch=main)
-[![CDN](https://img.shields.io/badge/CDN-netlify-success)](https://fairsharingapiclientcdn.netlify.app/fairsharing.min.js)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/caedac1ab73341759acc2b815aaff355)](https://www.codacy.com/gh/FAIRsharing/FAIRSharing-API-Client/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FAIRsharing/FAIRSharing-API-Client&amp;utm_campaign=Badge_Grade)
-[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
-![Project Status](https://img.shields.io/badge/status-alpha-orange)
+<p align="center"><a href="https://beta.fairsharing.org/" target="_blank" rel="noopener noreferrer"><img width="300" src="https://beta.fairsharing.org/assets/fairsharing-logo.svg" alt="Vue logo"></a></p>
+<p align="center">
+    <a href="https://github.com/FAIRsharing/FAIRSharing-API-Client/actions/workflows/unit_tests.yml" target="_blank" rel="noopener noreferrer">
+        <img src="https://github.com/FAIRsharing/FAIRSharing-API-Client/actions/workflows/unit_tests.yml/badge.svg" alt="Build Badge"/> 
+    </a>
+    <a href="https://fairsharingapidoc.netlify.app" target="_blank" rel="noopener noreferrer">
+        <img src="https://api.netlify.com/api/v1/badges/edd1e884-83d9-46f4-902c-b4078c3acc22/deploy-status" alt="Documentation Badge"/> 
+    </a>
+    <a href="https://coveralls.io/github/FAIRsharing/FAIRSharing-API-Client?branch=main" target="_blank" rel="noopener noreferrer"> 
+        <img src="https://coveralls.io/repos/github/FAIRsharing/FAIRSharing-API-Client/badge.svg?branch=main" alt="Coverage Badge"/> 
+    </a>
+    <a href="https://fairsharingapiclientcdn.netlify.app/fairsharing.min.js" target="_blank" rel="noopener noreferrer"> 
+        <img src="https://img.shields.io/badge/CDN-netlify-success" alt="CDN Badge"/> 
+    </a>
+    <a href="https://www.codacy.com/gh/FAIRsharing/FAIRSharing-API-Client/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FAIRsharing/FAIRSharing-API-Client&amp;utm_campaign=Badge_Grade" target="_blank" rel="noopener noreferrer"> 
+        <img src="https://app.codacy.com/project/badge/Grade/caedac1ab73341759acc2b815aaff355" alt="Code Quality Badge"/> 
+    </a>
+    <a href="https://lbesson.mit-license.org/" target="_blank" rel="noopener noreferrer"> 
+        <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT Licence Badge"/> 
+    </a>
+    <img src="https://img.shields.io/badge/status-alpha-orange" alt="Project Status"/>
+</p>
 
 
 
@@ -118,16 +133,17 @@ If you want to test the code using [`jest`](https://github.com/facebook/jest):
 npm run test:unit
 ```
 
-#### Local documentation:
+#### Documentation:
+The online [documentation](https://fairsharingapidoc.netlify.app/) is under continuous deployment and is hosted at netlify. <br>
 If you want to generate the documentation locally using [`jsdoc`](https://github.com/jsdoc/jsdoc) 
 and [`tui-jsdoc-template`](https://github.com/nhn/tui.jsdoc-template):
 ```shell
 npm run doc
 ```
 
-To generate the private methods run:
+To generate the documentation for the private methods (developers only) run:
 ```shell
 npm run doc:private
 ```
 
-The configuration file for the documentation in is [`/doc/doc.conf.js`](https://github.com/FAIRsharing/FAIRSharing-API-Client/tree/main/doc)
+The configuration file for the documentation in is [`/doc/doc.conf.js`](https://github.com/FAIRsharing/FAIRSharing-API-Client/tree/main/doc).

@@ -35,7 +35,7 @@
   "getProfileTypes": null,
   "updateStatusMaintenanceRequest": null,
   "deleteRecord":  { "id": 123 },
-  "getRecordsWoDOIs": null,
+  "getRecordsWithoutDOI": null,
   "getRecord": null,
   "getCountries": { "q": "France" },
   "getDomains": null,
