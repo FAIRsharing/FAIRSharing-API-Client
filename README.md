@@ -122,10 +122,11 @@ You can then transpile this code with webpack to make it available in the browse
 ### 4- Development:
 
 #### Building:
-If you modify the source code, remember to rebuild the `dist/` directory using:
+If you modify the source code, you can rebuild the `dist/` directory locally using:
 ```shell
 npm run build
 ```
+Alternatively, you can use the netlify continuous deployment pipeline rebuild it with a Pull Request.
 
 #### Testing:
 If you want to test the code using [`jest`](https://github.com/facebook/jest):
