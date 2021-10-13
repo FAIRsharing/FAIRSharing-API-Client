@@ -1,0 +1,195 @@
+---
+name: Test Report
+about: Reporting on tests
+title: "{Username} - Test report #1"
+labels: test report
+assignees: ''
+
+---
+
+- [] canClaim
+    - response code:
+    - response message if not successful:
+- [] canEdit
+    - response code:
+    - response message if not successful:
+- [] claimRecord
+    - response code:
+    - response message if not successful:
+- [] clearCache
+    - response code:
+    - response message if not successful:
+- [] confirmAccount
+    - response code:
+    - response message if not successful:
+- [] createAccount
+    - response code:
+    - response message if not successful:
+- [] createGrant
+    - response code:
+    - response message if not successful:
+- [] createLicenceLink
+    - response code:
+    - response message if not successful:
+- [] createNewUserDefinedTag
+    - response code:
+    - response message if not successful:
+- [] createOrganisation
+    - response code:
+    - response message if not successful:
+- [] createOrganisationLink
+    - response code:
+    - response message if not successful:
+- [] createPublication
+    - response code:
+    - response message if not successful:
+- [] createRecord
+    - response code:
+    - response message if not successful:
+- [] deleteLicenceLink
+    - response code:
+    - response message if not successful:
+- [] deleteOrganisationLink
+    - response code:
+    - response message if not successful:
+- [] deleteRecord
+    - response code:
+    - response message if not successful:
+- [] deleteUser
+    - response code:
+    - response message if not successful:
+- [] disableCache
+    - response code:
+    - response message if not successful:
+- [] editMyself
+    - response code:
+    - response message if not successful:
+- [] editPublication
+    - response code:
+    - response message if not successful:
+- [] editUser
+    - response code:
+    - response message if not successful:
+- [] enableCache
+    - response code:
+    - response message if not successful:
+- [] extraMetadataFields
+    - response code:
+    - response message if not successful:
+- [] generateExpirationDate
+    - response code:
+    - response message if not successful:
+- [] getCountries
+    - response code:
+    - response message if not successful:
+- [] getCountry
+    - response code:
+    - response message if not successful:
+- [] getDomain
+    - response code:
+    - response message if not successful:
+- [] getDomains
+    - response code:
+    - response message if not successful:
+- [] getMyself
+    - response code:
+    - response message if not successful:
+- [] getProfileTypes
+    - response code:
+    - response message if not successful:
+- [] getPublication
+    - response code:
+    - response message if not successful:
+- [] getPublications
+    - response code:
+    - response message if not successful:
+- [] getPublicUser
+    - response code:
+    - response message if not successful:
+- [] getRecord
+    - response code:
+    - response message if not successful:
+- [] getRecordsWithoutDOI
+    - response code:
+    - response message if not successful:
+- [] getRecordTypes
+    - response code:
+    - response message if not successful:
+- [] getRelationsTypes
+    - response code:
+    - response message if not successful:
+- [] getSpecies
+    - response code:
+    - response message if not successful:
+- [] getSubject
+    - response code:
+    - response message if not successful:
+- [] getSubjects
+    - response code:
+    - response message if not successful:
+- [] getTag
+    - response code:
+    - response message if not successful:
+- [] getTaxon
+    - response code:
+    - response message if not successful:
+- [] getTaxonomies
+    - response code:
+    - response message if not successful:
+- [] getUserDefinedTag
+    - response code:
+    - response message if not successful:
+- [] getUserDefinedTags
+    - response code:
+    - response message if not successful:
+- [] getUsersList
+    - response code:
+    - response message if not successful:
+- [] login
+    - response code:
+    - response message if not successful:
+- [] logout
+    - response code:
+    - response message if not successful:
+- [] requestResetPwd
+    - response code:
+    - response message if not successful:
+- [] resendConfirmation
+    - response code:
+    - response message if not successful:
+- [] resetPassword
+    - response code:
+    - response message if not successful:
+- [] resetPasswordWithoutToken
+    - response code:
+    - response message if not successful:
+- [] reviewRecord
+    - response code:
+    - response message if not successful:
+- [] saveRelations
+    - response code:
+    - response message if not successful:
+- [] searchRecords
+    - response code:
+    - response message if not successful:
+- [] searchTags
+    - response code:
+    - response message if not successful:
+- [] updateLicenceLink
+    - response code:
+    - response message if not successful:
+- [] updateOrganisationLink
+    - response code:
+    - response message if not successful:
+- [] updateRecord
+    - response code:
+    - response message if not successful:
+- [] updateStatusMaintenanceRequest
+    - response code:
+    - response message if not successful:
+- [] validateToken
+    - response code:
+    - response message if not successful:
+- [] verifyPassword
+    - response code:
+    - response message if not successful:
