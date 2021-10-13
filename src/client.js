@@ -3,8 +3,12 @@ const axios = require('axios')
 class RESTClient {
 
     /**
-     * The RESTClient is a singleton class that handles the connection and data exchange from the back-end
+     * The RESTClient is a singleton class that handles the connection and data exchange with the back-end
      * REST API.
+     * @param {String} url - the URL of the API server
+     * @example
+     * let client = new RESTClient("https://api.fairsharing.org")
+     * client.login("user", "password").then((res) => {console.log(res)});
      */
     constructor(url){
         if (RESTClient._instance){
@@ -148,6 +152,8 @@ class RESTClient {
      * Resend the validation link for a given user
      * @param {Object} user - contains the email of the user.
      * @returns {Promise}
+     * @example
+     * RESTClient.resendConfirmation({email: "example@email.com"}).then((res) => {console.log(res)});
      */
     async resendConfirmation(user) {
         const request = {
@@ -163,6 +169,8 @@ class RESTClient {
      * Reset the password of the given user
      * @param {Object} user - contains the new pwd, repeated pwd and token received in the email.
      * @returns {Promise}
+     * @example
+     * RESTClient.resetPassword({password: "pwd", repeatPassword: "pwd", token: "ExtractFromEmail"}).then((res) => {console.log(res)});
      */
     async resetPassword(user){
         const request = {
@@ -178,6 +186,7 @@ class RESTClient {
      * Changes the password of the logged in user
      * @param {Object} user - contains the current, new and repeated new password
      * @returns {Promise}
+     *
      */
     async resetPasswordWithoutToken(user){
         const request = {
@@ -313,30 +322,28 @@ class RESTClient {
      * Post the given object to the API to create the corresponding record.
      * @example
      * const newRecord = {
-    "fairsharing_record": {
-        "metadata": {
-            "name": "My new record",
-            "homepage": "http://example.com",
-            "abbreviation": "MNR",
-            "contacts": [
-                {
-                    "contact_name": "John Smith",
-                    "contact_orcid": "00000-321321321",
-                    "contact_email": "jsmith@example.com"
-                }
-            ],
-            "description": "This record is for my new exciting resource.",
-            "status": "ready"
-        },
-        "record_type_id": 1,
-        "subject_ids": [1, 2, 3],
-        "domain_ids": [1, 2, 3],
-        "taxonomy_ids": [1, 2, 3],
-        "user_defined_tag_ids": [1, 2, 3],
-        "country_ids": [1, 2, 3],
-        "publication_ids": [1, 2, 3],
-        "citation_ids": [1, 2, 3]
-    }
+    "metadata": {
+        "name": "My new record",
+        "homepage": "http://example.com",
+        "abbreviation": "MNR",
+        "contacts": [
+            {
+                "contact_name": "John Smith",
+                "contact_orcid": "00000-321321321",
+                "contact_email": "jsmith@example.com"
+            }
+        ],
+        "description": "This record is for my new exciting resource.",
+        "status": "ready"
+    },
+    "record_type_id": 1,
+    "subject_ids": [1, 2, 3],
+    "domain_ids": [1, 2, 3],
+    "taxonomy_ids": [1, 2, 3],
+    "user_defined_tag_ids": [1, 2, 3],
+    "country_ids": [1, 2, 3],
+    "publication_ids": [1, 2, 3],
+    "citation_ids": [1, 2, 3]
 };
      * RESTClient.createRecord(newRecord).then((res) => {console.log(res)})
      * @param {Object} record
@@ -444,7 +451,13 @@ class RESTClient {
     /**
     * Create new a licence link between a licence and a record
     * @example
-    * RESTClient.createLicenceLink({licenceID: 1, recordID: 1}).then((res) => { console.log(res) })
+    * const licenceLink = {
+  {
+    "fairsharing_record_id": 1,
+    "licence_id": 1,
+    "relation": "optional_string"
+  }
+    * RESTClient.createLicenceLink(licence_link).then((res) => { console.log(res) })
     * @param {Object} licenceLink - the licence link to create: contains the licence id and the record id.
     * @returns {Promise}
     */
@@ -538,6 +551,23 @@ class RESTClient {
      * Create a given organisation
      * @param {Object} organisation
      * @returns {Promise}
+     * @example
+     * const newOrganisation = {
+    "organisation_type_ids": [
+      1
+    ],
+    "name": "Harlington-Straker Studios",
+    "homepage": "https://harlington-straker.org",
+    "alternative_names": [
+      "SHADO"
+    ],
+    "logo": {
+      "filename": "shado.jpg",
+      "data": "file_data",
+      "content_type": "image/jpeg"
+    }
+  }
+     * RESTClient.createOrganisation(newOrganisation).then((res) => { console.log(res) });
      */
     async createOrganisation(organisation){
         const request = {
@@ -550,9 +580,22 @@ class RESTClient {
     }
 
     /**
-     * Create a given grant
+     * Create a new grant
      * @param {Object} grant
      * @returns {Promise}
+     * @example
+     * let newGrant = {
+"description": "A rather generous grant.",
+  "organisation_links_attributes":
+    [
+      {
+        "fairsharing_record_id": 1,
+        "organisation_id": 1,
+        "relation": "funds"
+      }
+    ]
+  }
+     * RESTClient.createGrant(newGrant).then((res) => { console.log(res) });
      */
     async createGrant(grant){
         const request = {
@@ -567,6 +610,14 @@ class RESTClient {
     /**
      * Create a new link between an organisation, a record and an optional grant.
      * @param {Object} organisationLink - the organisation link to create
+     * @example
+     * const organisationLink = {
+  {
+    "fairsharing_record_id": 1,
+    "organisation_id": 1,
+    "relation": "relation"
+   }
+     * RESTClient.createOrganisationLink(organisationLink).then((res) => { console.log(res) });
      * @returns {Promise}
      */
     async createOrganisationLink(organisationLink){
@@ -672,13 +723,13 @@ class RESTClient {
 
     /**
      * Delete Record. Requires Admin right.
-     * @param {Number} id - id of the record link to delete
+     * @param {Number} recordID - id of the record link to delete
      * @returns {Promise}
      */
-    async deleteRecord(id){
+    async deleteRecord(recordID){
         const request = {
             method: "delete",
-            baseURL: this.baseURL + "/fairsharing_records/" + id,
+            baseURL: this.baseURL + "/fairsharing_records/" + recordID,
             headers: this.headers,
         };
         return await this.processQuery(request, true);
