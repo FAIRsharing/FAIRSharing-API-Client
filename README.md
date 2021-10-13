@@ -15,7 +15,7 @@
     <a href="https://www.codacy.com/gh/FAIRsharing/FAIRSharing-API-Client/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FAIRsharing/FAIRSharing-API-Client&amp;utm_campaign=Badge_Grade" target="_blank" rel="noopener noreferrer"> 
         <img src="https://app.codacy.com/project/badge/Grade/caedac1ab73341759acc2b815aaff355" alt="Code Quality Badge"/> 
     </a>
-    <a href="https://lbesson.mit-license.org/" target="_blank" rel="noopener noreferrer"> 
+    <a href="https://github.com/FAIRsharing/FAIRSharing-API-Client/blob/main/LICENSE" target="_blank" rel="noopener noreferrer"> 
         <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT Licence Badge"/> 
     </a>
     <img src="https://img.shields.io/badge/status-alpha-orange" alt="Project Status"/>
