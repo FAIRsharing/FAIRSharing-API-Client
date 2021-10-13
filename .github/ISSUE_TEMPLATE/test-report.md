@@ -7,94 +7,94 @@ assignees: ''
 
 ---
 
-- [] canClaim
+- [ ] canClaim
     - response code:
     - response message if not successful:
-- [] canEdit
+- [ ] canEdit
     - response code:
     - response message if not successful:
-- [] claimRecord
+- [ ]  claimRecord
     - response code:
     - response message if not successful:
-- [] clearCache
+- [ ] clearCache
     - response code:
     - response message if not successful:
-- [] confirmAccount
+- [ ] confirmAccount
     - response code:
     - response message if not successful:
-- [] createAccount
+- [ ] createAccount
     - response code:
     - response message if not successful:
-- [] createGrant
+- [ ] createGrant
     - response code:
     - response message if not successful:
-- [] createLicenceLink
+- [ ] createLicenceLink
     - response code:
     - response message if not successful:
-- [] createNewUserDefinedTag
+- [ ] createNewUserDefinedTag
     - response code:
     - response message if not successful:
-- [] createOrganisation
+- [ ] createOrganisation
     - response code:
     - response message if not successful:
 - [] createOrganisationLink
     - response code:
     - response message if not successful:
-- [] createPublication
+- [ ] createPublication
     - response code:
     - response message if not successful:
-- [] createRecord
+- [ ] createRecord
     - response code:
     - response message if not successful:
-- [] deleteLicenceLink
+- [ ] deleteLicenceLink
     - response code:
     - response message if not successful:
-- [] deleteOrganisationLink
+- [ ] deleteOrganisationLink
     - response code:
     - response message if not successful:
-- [] deleteRecord
+- [ ] deleteRecord
     - response code:
     - response message if not successful:
-- [] deleteUser
+- [ ] deleteUser
     - response code:
     - response message if not successful:
-- [] disableCache
+- [ ] disableCache
     - response code:
     - response message if not successful:
-- [] editMyself
+- [ ] editMyself
     - response code:
     - response message if not successful:
-- [] editPublication
+- [ ] editPublication
     - response code:
     - response message if not successful:
-- [] editUser
+- [ ] editUser
     - response code:
     - response message if not successful:
-- [] enableCache
+- [ ] enableCache
     - response code:
     - response message if not successful:
-- [] extraMetadataFields
+- [ ] extraMetadataFields
     - response code:
     - response message if not successful:
-- [] generateExpirationDate
+- [ ] generateExpirationDate
     - response code:
     - response message if not successful:
-- [] getCountries
+- [ ] getCountries
     - response code:
     - response message if not successful:
-- [] getCountry
+- [ ] getCountry
     - response code:
     - response message if not successful:
-- [] getDomain
+- [ ] getDomain
     - response code:
     - response message if not successful:
-- [] getDomains
+- [ ] getDomains
     - response code:
     - response message if not successful:
-- [] getMyself
+- [ ] getMyself
     - response code:
     - response message if not successful:
-- [] getProfileTypes
+- [ ] getProfileTypes
     - response code:
     - response message if not successful:
 - [] getPublication
@@ -109,87 +109,87 @@ assignees: ''
 - [] getRecord
     - response code:
     - response message if not successful:
-- [] getRecordsWithoutDOI
+- [ ] getRecordsWithoutDOI
     - response code:
     - response message if not successful:
-- [] getRecordTypes
+- [ ] getRecordTypes
     - response code:
     - response message if not successful:
-- [] getRelationsTypes
+- [ ] getRelationsTypes
     - response code:
     - response message if not successful:
-- [] getSpecies
+- [ ] getSpecies
     - response code:
     - response message if not successful:
-- [] getSubject
+- [ ] getSubject
     - response code:
     - response message if not successful:
-- [] getSubjects
+- [ ] getSubjects
     - response code:
     - response message if not successful:
-- [] getTag
+- [ ] getTag
     - response code:
     - response message if not successful:
-- [] getTaxon
+- [ ] getTaxon
     - response code:
     - response message if not successful:
-- [] getTaxonomies
+- [ ] getTaxonomies
     - response code:
     - response message if not successful:
-- [] getUserDefinedTag
+- [ ] getUserDefinedTag
     - response code:
     - response message if not successful:
-- [] getUserDefinedTags
+- [ ] getUserDefinedTags
     - response code:
     - response message if not successful:
-- [] getUsersList
+- [ ] getUsersList
     - response code:
     - response message if not successful:
-- [] login
+- [ ] login
     - response code:
     - response message if not successful:
-- [] logout
+- [ ] logout
     - response code:
     - response message if not successful:
-- [] requestResetPwd
+- [ ] requestResetPwd
     - response code:
     - response message if not successful:
-- [] resendConfirmation
+- [ ] resendConfirmation
     - response code:
     - response message if not successful:
-- [] resetPassword
+- [ ] resetPassword
     - response code:
     - response message if not successful:
-- [] resetPasswordWithoutToken
+- [ ] resetPasswordWithoutToken
     - response code:
     - response message if not successful:
-- [] reviewRecord
+- [ ] reviewRecord
     - response code:
     - response message if not successful:
-- [] saveRelations
+- [ ] saveRelations
     - response code:
     - response message if not successful:
-- [] searchRecords
+- [ ] searchRecords
     - response code:
     - response message if not successful:
-- [] searchTags
+- [ ] searchTags
     - response code:
     - response message if not successful:
-- [] updateLicenceLink
+- [ ] updateLicenceLink
     - response code:
     - response message if not successful:
-- [] updateOrganisationLink
+- [ ] updateOrganisationLink
     - response code:
     - response message if not successful:
-- [] updateRecord
+- [ ] updateRecord
     - response code:
     - response message if not successful:
-- [] updateStatusMaintenanceRequest
+- [ ] updateStatusMaintenanceRequest
     - response code:
     - response message if not successful:
-- [] validateToken
+- [ ] validateToken
     - response code:
     - response message if not successful:
-- [] verifyPassword
+- [ ] verifyPassword
     - response code:
     - response message if not successful:
