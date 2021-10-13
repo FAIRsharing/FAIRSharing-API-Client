@@ -4,3 +4,8 @@ footer img.logo {
 footer {
     height: auto !important;
 }
+
+.main section article table td.name
+{
+    max-width: 150px !important;
+}
