@@ -14,8 +14,10 @@ module.exports = {
     output: {
         path: __dirname + "/dist",
         filename: 'fairsharing.min.js',
-        library: "fairsharingClient",
-        libraryTarget: 'var'
+        library: {
+            name: "fairsharingClient",
+            type: "var"
+        }
     },
     resolve: {
         alias: {

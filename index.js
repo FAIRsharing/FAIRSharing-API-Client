@@ -1,2 +1,1 @@
-const fairsharingClient = require('./src/client');
-module.exports = fairsharingClient;
+module.exports = require("./src/client")
