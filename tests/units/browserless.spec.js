@@ -1,10 +1,9 @@
-const RESTClient = require('../../index.js')
-let client;
+const client = require('../../index.js')
 let endpoint = "example.com"
 
 describe("FAIRSharing Client browserless", () => {
     beforeAll( () => { global.console.info = jest.fn() });
-    beforeEach(() => { client = RESTClient(endpoint) });
+    beforeEach(() => { client.setURL(endpoint) });
 
     it("can log correctly the lack of localStorage", () => {
         const logMessage = "The cache relies on localStorage and thus is not supported in this environment."

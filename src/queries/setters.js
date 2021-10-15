@@ -1,7 +1,7 @@
 'use strict'
 
 let clientConfiguration = require("../core/client.conf")
-let processQuery = require("../core/processor")
+let processQuery = require("../core/processor").processQuery
 
 /**
  * Post the given object to the API to create the corresponding record.

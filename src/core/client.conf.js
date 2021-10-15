@@ -1,5 +1,13 @@
 'use strict'
 
+/**
+ * Throws an error if the user is not logged in
+ * @private
+ */
+const isLoggedIn = () => {
+    if (!clientConfiguration.headers.Authorization) throw Error("Missing JWT. Please login first")
+}
+
 let clientConfiguration = {
     baseURL: "https://api.fairsharing.org",
     cacheEnabled: false,
@@ -9,11 +17,12 @@ let clientConfiguration = {
         "Content-Type": "application/json",
     },
     userID: null,
-    setAuthenticationHeaders(jwt = null) {
+    setAuthenticationHeaders(jwt) {
         if (jwt) clientConfiguration.headers['Authorization'] = `Bearer ${jwt}`;
         else delete clientConfiguration.headers['Authorization']
     },
-    storageAvailable: storageAvailable()
+    storageAvailable: storageAvailable(),
+    isLoggedIn: () => isLoggedIn()
 }
 
 /**

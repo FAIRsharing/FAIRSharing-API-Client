@@ -1,7 +1,7 @@
 'use strict'
 
 let clientConfiguration = require("../core/client.conf")
-let processQuery = require("../core/processor")
+let processQuery = require("../core/processor").processQuery
 
 /**
  * Validates the tag type against allowed types

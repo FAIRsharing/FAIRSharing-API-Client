@@ -1,7 +1,7 @@
 'use strict'
 
 let clientConfiguration = require("../core/client.conf"),
-    processQuery = require("../core/processor"),
+    processQuery = require("../core/processor").processQuery,
     validation = require("./validation")
 
 /**

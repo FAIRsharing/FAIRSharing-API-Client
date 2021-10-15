@@ -1,5 +1,5 @@
 let clientConfiguration = require("../core/client.conf")
-let processQuery = require("../core/processor")
+let processQuery = require("../core/processor").processQuery
 
 /**
  * Method to log in the user and set the JWT into the headers
