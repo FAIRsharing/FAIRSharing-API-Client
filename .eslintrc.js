@@ -2,7 +2,8 @@ module.exports = {
   root: true,
   env: {
     node: true,
-    jest: true
+    jest: true,
+    browser: true,
   },
   "extends": [
     "eslint:recommended"

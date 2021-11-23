@@ -147,4 +147,4 @@ To generate the documentation for the private methods (developers only) run:
 npm run doc:private
 ```
 
-The configuration file for the documentation in is [`/doc/doc.conf.js`](https://github.com/FAIRsharing/FAIRSharing-API-Client/tree/main/doc).
+The clientConfiguration file for the documentation in is [`/doc/doc.conf.js`](https://github.com/FAIRsharing/FAIRSharing-API-Client/tree/main/doc).
